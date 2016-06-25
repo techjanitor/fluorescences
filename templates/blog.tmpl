@@ -1,23 +1,23 @@
 {{template "base" .}}
 {{range $post := .Posts}}
 <div class="blog_subcontainer">
-<div class="subcontainer_header">
-<div class="subcontainer_info">
-{{$post.HumanTime}}
-</div>
-<div class="subcontainer_title">
-{{$post.ID}}
-{{$post.Title}}
-</div>
-</div>
-<div class="subcontainer_content">
-{{$post.Content}}
-</div>
-<div class="subcontainer_footer">
-<div class="subcontainer_author">
-by {{$post.User}}
-</div>
-</div>
+  <div class="subcontainer_header">
+    <div class="subcontainer_info">
+      {{$post.HumanTime}}
+    </div>
+    <div class="subcontainer_title">
+      {{$post.ID}}
+      {{$post.Title}}
+    </div>
+  </div>
+  <div class="subcontainer_content">
+    {{$post.Content}}
+  </div>
+  <div class="subcontainer_footer">
+    <div class="subcontainer_author">
+      by {{$post.User}}
+    </div>
+  </div>
 </div>
 {{end}}
 {{template "pagination" .}}

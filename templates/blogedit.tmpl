@@ -1,9 +1,13 @@
 {{ template "base" .}}
 <div class="admin">
-<form action="/admin/blog" method="post">
-  <input name="title"></input>
-<textarea name="post"></textarea>
-<button class="button" type="submit" value="Submit">Submit</button>
-</form>
+  {{if .New}}
+  <form action="/admin/blog" method="post">
+    <input name="title"></input>
+    <textarea name="post"></textarea>
+    <button class="button" type="submit" value="Submit">Submit</button>
+  </form>
+  {{end}}
+  {{if .Edit}}
+  {{end}}
 </div>
 {{ template "footer" .}}

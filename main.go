@@ -56,10 +56,10 @@ func main() {
 
 	admin.GET("/panel", c.AdminPanelController)
 
-	admin.GET("/blog", c.BlogEditController)
+	admin.GET("/new/blog", c.BlogNewController)
 	admin.POST("/blog", c.BlogPostController)
 
-	admin.GET("/gallery", c.GalleryEditController)
+	admin.GET("/new/gallery", c.GalleryNewController)
 	admin.POST("/gallery", c.GalleryPostController)
 
 	s := &http.Server{
