@@ -1,0 +1,11 @@
+{{ template "base" .}}
+{{ template "pagination" .}}
+<div class="comic">
+  <a target="_blank" href="images/{{.Image.Filename}}">
+    <div class="image">
+      <img src="images/{{.Image.Filename}}" alt="">
+    </div>
+  </a>
+</div>
+{{ template "pagination" .}}
+{{ template "footer" .}}

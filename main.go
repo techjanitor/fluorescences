@@ -50,7 +50,7 @@ func main() {
 	public.GET("/blog/:page", c.BlogController)
 	public.GET("/comics/:page", c.GalleryController)
 	public.GET("/comic/:id/:page", c.ComicController)
-	public.GET("/image/:id/:page", c.ComicController)
+	public.GET("/image/:id/:page", c.ImageController)
 
 	admin := r.Group("/admin")
 

@@ -27,6 +27,21 @@ type FileType struct {
 	Filename string
 }
 
+// Files is a slice of FileTypes
+type Files []FileType
+
+func (f Files) Len() int {
+	return len(f)
+}
+
+func (f Files) Less(i, j int) bool {
+	return f[i].ID < f[j].ID
+}
+
+func (f Files) Swap(i, j int) {
+	f[i], f[j] = f[j], f[i]
+}
+
 // KeyType holds a key for a private gallery
 type KeyType struct {
 	Key string
@@ -44,7 +59,7 @@ type GalleryType struct {
 	HumanTime  string
 	OpenTime   time.Time
 	StoredTime time.Time
-	Files      []FileType
+	Files      Files
 	Keys       []KeyType
 }
 
@@ -67,7 +82,7 @@ func GalleryPostController(c *gin.Context) {
 	}
 
 	// slice to hold our file information
-	var files []FileType
+	var files Files
 
 	// Check if theres a file
 	upload, fileheader, err := c.Request.FormFile("file")
