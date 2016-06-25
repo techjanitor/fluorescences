@@ -1,0 +1,30 @@
+{{ template "base" .}}
+{{if .All}}
+<div class="gallery">
+{{range $gallery := .Galleries}}
+  <a href="comic/{{$gallery.ID}}/1">
+    <div class="image_info">
+      {{$gallery.Title}}
+    </div>
+    <div class="image">
+      <img src="images/{{$gallery.Cover}}" alt="">
+    </div>
+  </a>
+{{end}}
+</div>
+{{else}}
+<div class="comic_title">
+{{.Gallery.Title}}
+</div>
+<div class="gallery">
+{{range $file := .Gallery.Files}}
+<a href="image/{{$.Gallery.ID}}/{{$file.ID}}">
+  <div class="image">
+    <img src="images/{{$file.Filename}}" alt="">
+  </div>
+</a>
+{{end}}
+</div>
+{{end}}
+{{ template "pagination" .}}
+{{ template "footer" .}}

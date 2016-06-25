@@ -1,0 +1,12 @@
+{{ template "base" .}}
+<div class="admin">
+{{range $gallery := .Galleries}}
+<div class="gallery_info">
+{{$gallery.ID}}
+{{$gallery.Title}}
+{{$gallery.Hidden}}
+{{$gallery.Private}}
+</div>
+{{end}}
+</div>
+{{ template "footer" .}}

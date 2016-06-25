@@ -1,0 +1,39 @@
+.pagination {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 1em;
+
+  & .nav_link {
+    padding: 1em 2em;
+    display: inline-block;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  & .left {
+    float: left;
+    text-align: left;
+    width: 30%;
+  }
+
+  & .right {
+    float: right;
+    text-align: right;
+    width: 30%;
+  }
+
+  & .center {
+    padding: 1em;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    width: 40%;
+  }
+
+  & .disabled {
+    color: #909090;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,12 @@
+.admin {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  padding: 1em;
+  margin-bottom: 1em;
+
+  & .nav_link {
+    display: inline-block;
+  }
+}

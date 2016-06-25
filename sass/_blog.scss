@@ -1,0 +1,52 @@
+.main_content {
+  order: 2;
+  height: auto;
+  padding: 0.5em;
+
+  @media #{$screenSmall} {
+    padding: 1em;
+    width: 80%;
+  }
+}
+
+.blog_subcontainer {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  margin-bottom: 1em;
+
+  & .subcontainer_content {
+    padding: 1em;
+  }
+
+  & .subcontainer_header {
+    @include clearfix;
+
+    padding: 1em;
+  }
+
+  & .subcontainer_title {
+    display: inline-block;
+    float: left;
+    width: 50%;
+    font-size: 1.2em;
+  }
+
+  & .subcontainer_info {
+    display: inline-block;
+    float: right;
+    width: 50%;
+    text-align: right;
+    font-size: 0.8em;
+  }
+
+  & .subcontainer_footer {
+    padding: 0.5em 1em;
+    padding-bottom: 1em;
+  }
+
+  & .subcontainer_author {
+    font-size: 0.8em;
+  }
+}

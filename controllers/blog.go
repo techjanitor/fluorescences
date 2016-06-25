@@ -1,0 +1,91 @@
+package controllers
+
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/boltdb/bolt"
+	"github.com/gin-gonic/gin"
+
+	u "fluorescences/utils"
+)
+
+var (
+	perpage = 10
+)
+
+// BlogController handles the index page
+func BlogController(c *gin.Context) {
+	var err error
+	var posts []BlogType
+
+	currentPage, _ := strconv.Atoi(c.Param("page"))
+	if currentPage < 1 {
+		currentPage = 1
+	}
+
+	// holds our pagination data
+	paginate := u.Paged{}
+	// holds out page metadata from settings
+	metadata, err := u.GetMetadata()
+	if err != nil {
+		c.Error(err).SetMeta("BlogController.GetMetadata")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
+		// the blog bucket
+		b := tx.Bucket([]byte(BlogDB))
+
+		// stats for key count
+		stats := b.Stats()
+
+		paginate.CurrentPage = currentPage
+		paginate.Total = stats.KeyN
+		paginate.PerPage = perpage
+		paginate.Desc()
+
+		cb := b.Cursor()
+
+		for k, v := cb.Seek(u.Itob(paginate.Start)); k != nil && !bytes.Equal(k, u.Itob(paginate.End)); k, v = cb.Prev() {
+
+			post := BlogType{}
+
+			err = json.Unmarshal(v, &post)
+			if err != nil {
+				return
+			}
+
+			// convert time
+			post.HumanTime = post.StoredTime.Format("2006-01-02")
+
+			posts = append(posts, post)
+
+		}
+		return
+	})
+	if err != nil {
+		c.Error(err).SetMeta("BlogController")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	// values for template
+	vals := struct {
+		Meta  u.Metadata
+		Paged u.Paged
+		Posts []BlogType
+	}{
+		Meta:  metadata,
+		Paged: paginate,
+		Posts: posts,
+	}
+
+	c.HTML(http.StatusOK, "blog.tmpl", vals)
+
+	return
+
+}

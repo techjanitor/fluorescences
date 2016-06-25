@@ -1,0 +1,33 @@
+@import "normalize";
+@import "base";
+@import "color";
+@import "blog";
+@import "menu";
+@import "gallery";
+@import "pagination";
+@import "admin";
+
+/* main css */
+
+.container {
+  @media #{$screenSmall} {
+    padding-top: 1em;
+  }
+}
+
+.main_container {
+  @include clearfix;
+
+  @include mediaWidths;
+
+  width: $boxWidthRel;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+
+  @media #{$screenSmall} {
+    flex-direction: row;
+  }
+}

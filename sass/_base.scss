@@ -1,0 +1,92 @@
+/* base style */
+
+/* variables */
+
+/* widths */
+
+$boxWidthRel: 90%;
+
+$boxWidthSmall: 48em;
+$boxWidthMedium: 63em;
+$boxWidthLarge: 78em;
+
+$screenSmall: "screen and (min-width: 50em)";
+$screenMedium: "screen and (min-width: 65em)";
+$screenLarge: "screen and (min-width: 80em)";
+
+/* mixins */
+
+@mixin mediaSmall {
+  @media #{$screenSmall} {
+    width: $boxWidthSmall;
+  }
+}
+
+@mixin mediaMedium {
+  @media #{$screenMedium} {
+    width: $boxWidthMedium;
+  }
+}
+
+@mixin mediaLarge {
+  @media #{$screenLarge} {
+    width: $boxWidthLarge;
+  }
+}
+
+@mixin mediaWidths {
+  @include mediaSmall;
+
+  @include mediaMedium;
+
+  @include mediaLarge;
+}
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+/* global css */
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  font-size: 1em;
+  min-width: 20em;
+  overflow-y: scroll;
+}
+
+video {
+  display: inline-block;
+  vertical-align: baseline;
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  overflow: hidden;
+  white-space: pre-line;
+  margin: 0;
+  word-wrap: break-word;
+  hyphens: auto;
+}

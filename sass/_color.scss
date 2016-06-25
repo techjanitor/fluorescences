@@ -1,0 +1,62 @@
+body {
+  background-color: #e2e3ea;
+  color: #e7e7f3;
+}
+
+a {
+  color: #b36666;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: #f36666;
+  }
+}
+
+.pagination,
+.gallery,
+.comic,
+.admin,
+.comic_title,
+.blog_subcontainer {
+  background-color: #edeef3;
+  color: #242629;
+  border: 1px solid #b9b9b9;
+}
+
+.subcontainer_author,
+.subcontainer_info {
+  color: #a7a7a7;
+}
+
+.menu_container {
+  background-color: #edeef3;
+  color: #242629;
+  border: 1px solid #b9b9b9;
+
+  a {
+    &:hover,
+    &:focus,
+    &.focus {
+      color: #242629;
+      background-color: #f36666;
+    }
+  }
+}
+
+.image_info {
+  background-color: #ddd;
+  opacity: 0.8;
+  color: #242629;
+}
+
+.pagination {
+  a {
+    &:hover,
+    &:focus,
+    &.focus {
+      color: #242629;
+      background-color: #f36666;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+<base href="/">
+<title>{{.Meta.Title}}</title>
+<meta name="description" content="{{.Meta.Desc}}" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/css/fluorescen.css" />
+<body>
+<div class="container">
+<div class="main_container">
+{{template "menu"}}
+<div class="main_content">
+{{end}}

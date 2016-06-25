@@ -1,0 +1,9 @@
+{{ template "base" .}}
+<div class="admin">
+<form action="/admin/blog" method="post">
+  <input name="title"></input>
+<textarea name="post"></textarea>
+<button class="button" type="submit" value="Submit">Submit</button>
+</form>
+</div>
+{{ template "footer" .}}
