@@ -18,6 +18,14 @@
 
   & .subcontainer_content {
     padding: 1em;
+
+    & img {
+      max-width: 100%;
+
+      @media #{$screenSmall} {
+        max-height: 400px;
+      }
+    }
   }
 
   & .subcontainer_header {

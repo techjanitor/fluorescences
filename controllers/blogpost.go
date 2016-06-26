@@ -8,8 +8,6 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
-	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
 
 	u "fluorescences/utils"
 )
@@ -19,7 +17,8 @@ type BlogType struct {
 	ID         int
 	User       string
 	Title      string
-	Content    template.HTML
+	Content    string
+	ContentOut template.HTML
 	HumanTime  string
 	StoredTime time.Time
 }
@@ -42,18 +41,11 @@ func BlogPostController(c *gin.Context) {
 		return
 	}
 
-	// make the post formatted with markdown
-	unsafe := blackfriday.MarkdownCommon([]byte(bf.Post))
-	// sanitize the input
-	html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
-	// convert to template format
-	content := template.HTML(html)
-
 	blog := BlogType{
 		User:       "test",
 		StoredTime: time.Now(),
 		Title:      bf.Title,
-		Content:    content,
+		Content:    bf.Post,
 	}
 
 	err = AddBlog(blog)

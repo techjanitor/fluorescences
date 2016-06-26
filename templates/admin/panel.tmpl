@@ -1,12 +1,37 @@
 {{ template "base" .}}
 <div class="admin">
-{{range $gallery := .Galleries}}
+
 <div class="gallery_info">
-{{$gallery.ID}}
+  <table>
+    <thead>
+          <tr>
+  <th style="text-align:left;">Title</th>
+  <th style="text-align:center;">Hidden</th>
+  <th style="text-align:center;">Private</th>
+  <th style="text-align:center;">Edit</th>
+          </tr>
+      </thead>
+          <tbody>
+{{range $gallery := .Galleries}}
+<tr>
+<td style="width:auto;text-align:left;">
 {{$gallery.Title}}
+</td>
+<td style="width:3em;text-align:center;" align="center">
 {{$gallery.Hidden}}
+</td>
+<td style="width:3em;text-align:center;" align="center">
 {{$gallery.Private}}
-</div>
+</td>
+<td style="width:3em;text-align:center;" align="center">
+<a class="button button-primary" href="/admin/edit/gallery/{{$gallery.ID}}">Edit</a>
+</td>
+</tr>
 {{end}}
+
+</tbody>
+</table>
+</div>
+
 </div>
 {{ template "footer" .}}

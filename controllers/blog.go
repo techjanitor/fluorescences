@@ -3,11 +3,14 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"strconv"
 
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 
 	u "fluorescences/utils"
 )
@@ -61,6 +64,13 @@ func BlogController(c *gin.Context) {
 
 			// convert time
 			post.HumanTime = post.StoredTime.Format("2006-01-02")
+
+			// make the post formatted with markdown
+			unsafe := blackfriday.MarkdownCommon([]byte(post.Content))
+			// sanitize the input
+			html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+			// convert to template format
+			post.ContentOut = template.HTML(html)
 
 			posts = append(posts, post)
 

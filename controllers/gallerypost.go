@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"html/template"
 	"io"
 	"net/http"
 	"os"
@@ -10,8 +9,6 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
-	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
 
 	u "fluorescences/utils"
 )
@@ -48,7 +45,7 @@ type GalleryType struct {
 	User       string
 	Title      string
 	Cover      string
-	Desc       template.HTML
+	Desc       string
 	Hidden     bool
 	Private    bool
 	HumanTime  string
@@ -58,8 +55,8 @@ type GalleryType struct {
 	Keys       []KeyType
 }
 
-// GalleryForm is the input from the blog form
-type GalleryForm struct {
+// GalleryNewForm is the input from the blog form
+type GalleryNewForm struct {
 	Title string `form:"title" binding:"required"`
 	Desc  string `form:"desc" binding:"required"`
 }
@@ -67,9 +64,9 @@ type GalleryForm struct {
 // GalleryPostController posts new blogs
 func GalleryPostController(c *gin.Context) {
 	var err error
-	var gf GalleryForm
+	var gnf GalleryNewForm
 
-	err = c.Bind(&gf)
+	err = c.Bind(&gnf)
 	if err != nil {
 		c.Error(err).SetMeta("GalleryPostController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
@@ -112,19 +109,11 @@ func GalleryPostController(c *gin.Context) {
 
 	files = append(files, file)
 
-	// make the post formatted with markdown
-	unsafe := blackfriday.MarkdownCommon([]byte(gf.Desc))
-	// sanitize the input
-	html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
-	// convert to template format
-	desc := template.HTML(html)
-
 	blog := &GalleryType{
 		User:       "test",
 		StoredTime: time.Now(),
-		Title:      gf.Title,
-		Desc:       desc,
-		Hidden:     true,
+		Title:      gnf.Title,
+		Desc:       gnf.Desc,
 		Files:      files,
 	}
 

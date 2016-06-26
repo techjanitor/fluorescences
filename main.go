@@ -65,7 +65,9 @@ func main() {
 	admin.POST("/blog", c.BlogPostController)
 
 	admin.GET("/new/gallery", c.GalleryNewController)
-	admin.POST("/gallery", c.GalleryPostController)
+	admin.POST("/new/gallery", c.GalleryPostController)
+	admin.GET("/edit/gallery/:id", c.GalleryEditController)
+	admin.POST("/edit/gallery", c.GalleryUpdateController)
 
 	s := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "127.0.0.1", 5000),

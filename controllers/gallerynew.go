@@ -21,15 +21,11 @@ func GalleryNewController(c *gin.Context) {
 
 	vals := struct {
 		Meta u.Metadata
-		New  bool
-		Edit bool
 	}{
 		Meta: metadata,
-		New:  true,
-		Edit: false,
 	}
 
-	c.HTML(http.StatusOK, "galleryedit.tmpl", vals)
+	c.HTML(http.StatusOK, "gallerynew.tmpl", vals)
 
 	return
 

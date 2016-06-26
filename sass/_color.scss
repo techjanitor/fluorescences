@@ -34,9 +34,9 @@ a {
   color: #242629;
   border: 1px solid #b9b9b9;
 
-&.admin_panel {
+  &.admin_panel {
     background-color: #ffeaea;
-}
+  }
 
   a {
     &:hover,
@@ -62,5 +62,61 @@ a {
       color: #242629;
       background-color: #f36666;
     }
+  }
+}
+
+.form-group {
+  & textarea,
+  & input,
+  & .userinfo {
+    border: 1px solid darken(#edeef3, 6%);
+    background-color: lighten(#edeef3, 3%);
+  }
+
+  & input[type=file] {
+    border: hidden;
+    background-color: transparent;
+  }
+}
+
+.button-default {
+  border: 1px solid darken(#edeef3, 10%);
+  background-color: darken(#edeef3, 5%);
+  box-shadow: inset 0 1px 0 0 lighten(#edeef3, 8%);
+
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: darken(#edeef3, 6%);
+  }
+}
+
+.button-primary {
+  border: 1px solid darken(#edeef3, 15%);
+  background-color: #edeef3;
+  box-shadow: inset 0 1px 0 0 lighten(#edeef3, 8%);
+
+  &:hover {
+    background-color: darken(#edeef3, 3%);
+  }
+}
+
+.button-success {
+  border: 1px solid darken(#74caa8, 15%);
+  background-color: #74caa8;
+  box-shadow: inset 0 1px 0 0 lighten(#74caa8, 8%);
+
+  &:hover {
+    background-color: darken(#74caa8, 3%);
+  }
+}
+
+.button-danger {
+  border: 1px solid darken(#E89B9B, 15%);
+  background-color: #E89B9B;
+  box-shadow: inset 0 1px 0 0 lighten(#E89B9B, 8%);
+
+  &:hover {
+    background-color: darken(#E89B9B, 3%);
   }
 }

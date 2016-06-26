@@ -1,14 +1,16 @@
 {{ template "base" .}}
 <div class="admin">
-  {{if .New}}
-  <form action="/admin/gallery" method="post" enctype="multipart/form-data">
-    <input name="title"></input>
-    <textarea name="desc"></textarea>
-    <input type="file" name="file">
-    <button class="button" type="submit" value="Submit">Submit</button>
+  <form action="/admin/edit/gallery" method="post" enctype="multipart/form-data">
+      <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
+    <div class="form-group">
+      <input class="form-control" name="title" placeholder="Title" value="{{.Gallery.Title}}" />
+    </div>
+    <div class="form-group">
+      <textarea placeholder="Description" class="form-control" rows="8" name="desc">{{.Gallery.Desc}}</textarea>
+    </div>
+    <div class="form-group">
+      <button class="button button-default form-control" type="submit" value="Submit">Submit</button>
+    </div>
   </form>
-  {{end}}
-  {{if .Edit}}
-  {{end}}
 </div>
 {{ template "footer" .}}

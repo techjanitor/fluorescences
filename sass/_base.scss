@@ -90,3 +90,12 @@ p {
   word-wrap: break-word;
   hyphens: auto;
 }
+
+table {
+  width: 100%;
+}
+
+table td,
+table th {
+  padding: 0.3em 0.5em;
+}
