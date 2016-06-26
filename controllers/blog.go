@@ -46,6 +46,7 @@ func BlogController(c *gin.Context) {
 		// stats for key count
 		stats := b.Stats()
 
+		paginate.Path = "/blog"
 		paginate.CurrentPage = currentPage
 		paginate.Total = stats.KeyN
 		paginate.PerPage = perpage

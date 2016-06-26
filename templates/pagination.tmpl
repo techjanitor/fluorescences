@@ -4,7 +4,7 @@
     {{ if .Paged.Min}}
     <span class="nav_link disabled">Prev</span>
     {{else}}
-    <a class="nav_link" href="/blog/{{ .Paged.Prev }}">Prev</a>
+    <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Prev}}">Prev</a>
     {{end}}
   </div>
   <div class="center">
@@ -14,7 +14,7 @@
     {{ if .Paged.Max}}
     <span class="nav_link disabled">Next</span>
     {{else}}
-    <a class="nav_link" href="/blog/{{ .Paged.Next }}">Next</a>
+    <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Next}}">Next</a>
     {{end}}
   </div>
 </div>

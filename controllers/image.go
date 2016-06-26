@@ -39,7 +39,7 @@ func ImageController(c *gin.Context) {
 		return
 	}
 
-	var image FileType
+	var image u.FileType
 	var title string
 
 	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
@@ -55,6 +55,7 @@ func ImageController(c *gin.Context) {
 			return
 		}
 
+		paginate.Path = "/image/" + c.Param("id")
 		paginate.CurrentPage = currentPage
 		paginate.Total = len(gallery.Files)
 		paginate.PerPage = 1
@@ -84,7 +85,7 @@ func ImageController(c *gin.Context) {
 		Paged u.Paged
 		Comic int
 		Title string
-		Image FileType
+		Image u.FileType
 	}{
 		Meta:  metadata,
 		Paged: paginate,

@@ -39,6 +39,7 @@ func GalleryController(c *gin.Context) {
 		// stats for key count
 		stats := b.Stats()
 
+		paginate.Path = "/comics"
 		paginate.CurrentPage = currentPage
 		paginate.Total = stats.KeyN
 		paginate.PerPage = perpage

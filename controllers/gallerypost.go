@@ -2,9 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -13,14 +11,8 @@ import (
 	u "fluorescences/utils"
 )
 
-// FileType holds an image file
-type FileType struct {
-	ID       int
-	Filename string
-}
-
 // Files is a slice of FileTypes
-type Files []FileType
+type Files []u.FileType
 
 func (f Files) Len() int {
 	return len(f)
@@ -84,28 +76,15 @@ func GalleryPostController(c *gin.Context) {
 		return
 	}
 
-	var dst *os.File
-
-	dst, err = os.Create("images/" + fileheader.Filename)
+	file, err := u.SaveFile(upload, fileheader.Filename)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController")
+		c.Error(err).SetMeta("GalleryPostController.SaveFile")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	defer dst.Close()
-
-	_, err = io.Copy(dst, upload)
-	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController")
-		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
-		return
-	}
-
-	file := FileType{
-		ID:       1,
-		Filename: fileheader.Filename,
-	}
+	// this is always the first image in the gallery
+	file.ID = 1
 
 	files = append(files, file)
 

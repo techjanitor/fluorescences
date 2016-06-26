@@ -4,16 +4,17 @@ import "math"
 
 // Paged contains the fields for pagination
 type Paged struct {
-	Total       int  `json:"total"`
-	PerPage     int  `json:"per_page"`
-	Pages       int  `json:"pages"`
-	CurrentPage int  `json:"current_page"`
-	Start       int  `json:"range_start"`
-	End         int  `json:"range_end"`
-	Prev        int  `json:"page_prev"`
-	Next        int  `json:"page_next"`
-	Min         bool `json:"page_min"`
-	Max         bool `json:"page_max"`
+	Total       int    `json:"total"`
+	PerPage     int    `json:"per_page"`
+	Pages       int    `json:"pages"`
+	CurrentPage int    `json:"current_page"`
+	Start       int    `json:"range_start"`
+	End         int    `json:"range_end"`
+	Prev        int    `json:"page_prev"`
+	Next        int    `json:"page_next"`
+	Min         bool   `json:"page_min"`
+	Max         bool   `json:"page_max"`
+	Path        string `json:"page_path"`
 }
 
 // Asc calculates the pagination numbers as ascending

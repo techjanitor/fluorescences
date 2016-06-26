@@ -51,6 +51,7 @@ func ComicController(c *gin.Context) {
 			return
 		}
 
+		paginate.Path = "/comic/" + c.Param("id")
 		paginate.CurrentPage = currentPage
 		paginate.Total = len(gallery.Files)
 		paginate.PerPage = 20
