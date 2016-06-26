@@ -34,6 +34,10 @@ a {
   color: #242629;
   border: 1px solid #b9b9b9;
 
+&.admin_panel {
+    background-color: #ffeaea;
+}
+
   a {
     &:hover,
     &:focus,

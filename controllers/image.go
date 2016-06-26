@@ -40,10 +40,11 @@ func ImageController(c *gin.Context) {
 	}
 
 	var image FileType
+	var title string
 
 	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
 		// the blog bucket
-		b := tx.Bucket([]byte(GalleryDB))
+		b := tx.Bucket([]byte(u.GalleryDB))
 
 		cb := b.Cursor()
 
@@ -67,6 +68,8 @@ func ImageController(c *gin.Context) {
 			}
 		}
 
+		title = gallery.Title
+
 		return
 	})
 	if err != nil {
@@ -79,10 +82,14 @@ func ImageController(c *gin.Context) {
 	vals := struct {
 		Meta  u.Metadata
 		Paged u.Paged
+		Comic int
+		Title string
 		Image FileType
 	}{
 		Meta:  metadata,
 		Paged: paginate,
+		Comic: comicID,
+		Title: title,
 		Image: image,
 	}
 

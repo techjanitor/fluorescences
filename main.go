@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/boltdb/bolt"
 	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gin-gonic/gin"
 
@@ -19,6 +18,7 @@ import (
 
 func main() {
 
+	// make new buckets if they dont exist
 	initialize := flag.Bool("init", false, "Initialize a new database")
 
 	flag.Parse()
@@ -29,6 +29,7 @@ func main() {
 		return
 	}
 
+	// load the site templates
 	t := template.Must(template.New("public").ParseGlob("templates/*.tmpl"))
 	t = template.Must(t.New("admin").ParseGlob("templates/**/*.tmpl"))
 
@@ -36,12 +37,15 @@ func main() {
 
 	// load template into gin
 	r.SetHTMLTemplate(t)
+
+	// serve our static files
 	r.Static("/css", "./css")
 	r.Static("/images", "./images")
 
 	// if nothing matches
 	r.NoRoute(c.ErrorController)
 
+	// routing group for public handlers
 	public := r.Group("/")
 	// generates our csrf cookie
 	public.Use(csrf.Cookie())
@@ -52,6 +56,7 @@ func main() {
 	public.GET("/comic/:id/:page", c.ComicController)
 	public.GET("/image/:id/:page", c.ImageController)
 
+	// routing group for admin handlers
 	admin := r.Group("/admin")
 
 	admin.GET("/panel", c.AdminPanelController)
@@ -75,26 +80,8 @@ func main() {
 func Initialize() {
 	var err error
 
-	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		_, err = tx.CreateBucketIfNotExists([]byte(c.GalleryDB))
-		if err != nil {
-			return
-		}
-
-		_, err = tx.CreateBucketIfNotExists([]byte(c.BlogDB))
-		if err != nil {
-			return
-		}
-
-		_, err = tx.CreateBucketIfNotExists([]byte(u.SettingsDB))
-		if err != nil {
-			return
-		}
-
-		return
-	})
+	err = u.InitMetadata()
 	if err != nil {
-		panic("could not init buckets")
+		panic("could not init metadata")
 	}
-
 }

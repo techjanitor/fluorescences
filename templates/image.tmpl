@@ -1,4 +1,7 @@
 {{ template "base" .}}
+<div class="comic_title">
+  <a href="/comic/{{.Comic}}/1">{{.Title}}</a>
+</div>
 {{ template "pagination" .}}
 <div class="comic">
   <a target="_blank" href="images/{{.Image.Filename}}">

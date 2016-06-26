@@ -550,6 +550,8 @@ a {
   background-color: #edeef3;
   color: #242629;
   border: 1px solid #b9b9b9; }
+  .menu_container.admin_panel {
+    background-color: #ffeaea; }
   .menu_container a:hover, .menu_container a:focus, .menu_container a.focus {
     color: #242629;
     background-color: #f36666; }
@@ -654,11 +656,11 @@ a {
   @media screen and (min-width: 50em) {
     .gallery a {
       width: calc(30% - 6px);
-      height: 250px;
+      height: 200px;
       margin-right: 8px; } }
 @media screen and (min-width: 50em) and (min-width: 65em) {
   .gallery a {
-    height: 300px; } }
+    height: 250px; } }
 
   .gallery .image_info {
     width: 100%;

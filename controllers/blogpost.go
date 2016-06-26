@@ -14,11 +14,6 @@ import (
 	u "fluorescences/utils"
 )
 
-var (
-	// BlogDB is the bucket name for blog posts
-	BlogDB = "blogs"
-)
-
 // BlogType holds a blog post
 type BlogType struct {
 	ID         int
@@ -79,10 +74,7 @@ func AddBlog(blog BlogType) (err error) {
 
 	// put the tumble in the database
 	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		bucket, err := tx.CreateBucketIfNotExists([]byte(BlogDB))
-		if err != nil {
-			return
-		}
+		bucket := tx.Bucket([]byte(u.BlogDB))
 
 		// get a sequence number
 		id, _ := bucket.NextSequence()

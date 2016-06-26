@@ -6,11 +6,6 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-var (
-	// SettingsDB holds the name of the settings bucket
-	SettingsDB = "settings"
-)
-
 // Metadata holds the meta data for pages
 type Metadata struct {
 	Title string `json:"page_title"`
@@ -51,10 +46,7 @@ func GetMetadata() (meta Metadata, err error) {
 // InitMetadata will create a new metadata bucket with the default settings
 func InitMetadata() (err error) {
 	err = Bolt.Update(func(tx *bolt.Tx) (err error) {
-		bucket, err := tx.CreateBucketIfNotExists([]byte(SettingsDB))
-		if err != nil {
-			return
-		}
+		bucket := tx.Bucket([]byte(SettingsDB))
 
 		// default info
 		metadata := Metadata{

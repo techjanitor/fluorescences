@@ -40,7 +40,7 @@ func ComicController(c *gin.Context) {
 
 	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
 		// the blog bucket
-		b := tx.Bucket([]byte(GalleryDB))
+		b := tx.Bucket([]byte(u.GalleryDB))
 
 		cb := b.Cursor()
 

@@ -24,13 +24,13 @@
   @media #{$screenSmall} {
     a {
       width: calc(30% - 6px);
-      height: 250px;
+      height: 200px;
       margin-right: 8px;
     }
 
     @media #{$screenMedium} {
       a {
-        height: 300px;
+        height: 250px;
       }
     }
   }

@@ -38,7 +38,7 @@ func BlogController(c *gin.Context) {
 
 	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
 		// the blog bucket
-		b := tx.Bucket([]byte(BlogDB))
+		b := tx.Bucket([]byte(u.BlogDB))
 
 		// stats for key count
 		stats := b.Stats()

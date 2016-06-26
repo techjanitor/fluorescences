@@ -16,11 +16,6 @@ import (
 	u "fluorescences/utils"
 )
 
-var (
-	//GalleryDB is the bucket for comic galleries
-	GalleryDB = "galleries"
-)
-
 // FileType holds an image file
 type FileType struct {
 	ID       int
@@ -151,10 +146,7 @@ func AddGallery(blog *GalleryType) (err error) {
 
 	// put the tumble in the database
 	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		bucket, err := tx.CreateBucketIfNotExists([]byte(GalleryDB))
-		if err != nil {
-			return
-		}
+		bucket := tx.Bucket([]byte(u.GalleryDB))
 
 		// get a sequence number
 		id, _ := bucket.NextSequence()
