@@ -71,7 +71,7 @@ func main() {
 	admin.POST("/new/image", c.ImageNewController)
 
 	s := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", "127.0.0.1", 5000),
+		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),
 		Handler: r,
 	}
 
