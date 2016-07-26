@@ -2,50 +2,39 @@ package controllers
 
 import (
 	"encoding/json"
-	"html/template"
 	"net/http"
 	"time"
 
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
-// BlogType holds a blog post
-type BlogType struct {
-	ID         int
-	User       string
-	Title      string
-	Content    string
-	ContentOut template.HTML
-	HumanTime  string
-	StoredTime time.Time
-}
-
-// BlogForm is the input from the blog form
-type BlogForm struct {
+// NewForm is the input from the blog form
+type NewForm struct {
 	Title string `form:"title" binding:"required"`
 	Post  string `form:"post" binding:"required"`
 }
 
-// BlogPostController posts new blogs
-func BlogPostController(c *gin.Context) {
+// PostController posts new blogs
+func PostController(c *gin.Context) {
 	var err error
-	var bf BlogForm
+	var nf NewForm
 
-	err = c.Bind(&bf)
+	err = c.Bind(&nf)
 	if err != nil {
 		c.Error(err).SetMeta("BlogPostController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	blog := BlogType{
+	blog := m.BlogType{
 		User:       "test",
 		StoredTime: time.Now(),
-		Title:      bf.Title,
-		Content:    bf.Post,
+		Title:      nf.Title,
+		Content:    nf.Post,
 	}
 
 	err = AddBlog(blog)
@@ -62,7 +51,7 @@ func BlogPostController(c *gin.Context) {
 }
 
 // AddBlog will add a blog post
-func AddBlog(blog BlogType) (err error) {
+func AddBlog(blog m.BlogType) (err error) {
 
 	// put the tumble in the database
 	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {

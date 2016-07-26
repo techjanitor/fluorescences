@@ -8,13 +8,14 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
 // ComicController handles the comic gallery pages
 func ComicController(c *gin.Context) {
 	var err error
-	var gallery GalleryType
+	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -69,7 +70,7 @@ func ComicController(c *gin.Context) {
 	vals := struct {
 		Meta    u.Metadata
 		Paged   u.Paged
-		Gallery GalleryType
+		Gallery m.GalleryType
 		All     bool
 	}{
 		Meta:    metadata,

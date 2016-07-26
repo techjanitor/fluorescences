@@ -7,13 +7,14 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
 // AdminPanelController is the main admin menu
 func AdminPanelController(c *gin.Context) {
 	var err error
-	var galleries []GalleryType
+	var galleries []m.GalleryType
 
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
@@ -31,7 +32,7 @@ func AdminPanelController(c *gin.Context) {
 
 		for k, v := cb.Last(); k != nil; k, v = cb.Prev() {
 
-			gallery := GalleryType{}
+			gallery := m.GalleryType{}
 
 			err = json.Unmarshal(v, &gallery)
 			if err != nil {
@@ -55,7 +56,7 @@ func AdminPanelController(c *gin.Context) {
 	// values for template
 	vals := struct {
 		Meta      u.Metadata
-		Galleries []GalleryType
+		Galleries []m.GalleryType
 	}{
 		Meta:      metadata,
 		Galleries: galleries,

@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	c "fluorescences/controllers"
+	blog "fluorescences/controllers/blog"
+	gallery "fluorescences/controllers/gallery"
 	u "fluorescences/utils"
 
 	"github.com/eirka/eirka-libs/csrf"
@@ -31,7 +33,6 @@ func main() {
 
 	// load the site templates
 	t := template.Must(template.New("public").ParseGlob("templates/*.tmpl"))
-	t = template.Must(t.New("admin").ParseGlob("templates/**/*.tmpl"))
 
 	r := gin.Default()
 
@@ -50,9 +51,9 @@ func main() {
 	// generates our csrf cookie
 	public.Use(csrf.Cookie())
 
-	public.GET("/", c.BlogController)
-	public.GET("/blog/:page", c.BlogController)
-	public.GET("/comics/:page", c.GalleryController)
+	public.GET("/", blog.ViewController)
+	public.GET("/blog/:page", blog.ViewController)
+	public.GET("/comics/:page", gallery.ViewController)
 	public.GET("/comic/:id/:page", c.ComicController)
 	public.GET("/image/:id/:page", c.ImageController)
 
@@ -61,14 +62,14 @@ func main() {
 
 	admin.GET("/panel", c.AdminPanelController)
 
-	admin.GET("/new/blog", c.BlogNewController)
-	admin.POST("/blog", c.BlogPostController)
+	admin.GET("/blog", blog.NewController)
+	admin.POST("/blog/new", blog.PostController)
 
-	admin.GET("/new/gallery", c.GalleryNewController)
-	admin.POST("/new/gallery", c.GalleryPostController)
-	admin.GET("/edit/gallery/:id", c.GalleryEditController)
-	admin.POST("/edit/gallery", c.GalleryUpdateController)
-	admin.POST("/new/image", c.ImageNewController)
+	admin.GET("/gallery", gallery.NewController)
+	admin.GET("/gallery/:id", gallery.EditController)
+	admin.POST("/gallery/new", gallery.PostController)
+	admin.POST("/gallery/update", gallery.UpdateController)
+	admin.POST("/gallery/image/new", c.ImageNewController)
 
 	s := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),

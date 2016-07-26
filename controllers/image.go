@@ -9,13 +9,14 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
 // ImageController handles the comic image pages
 func ImageController(c *gin.Context) {
 	var err error
-	var gallery GalleryType
+	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
@@ -69,7 +70,7 @@ func AddImage(gid int, file u.FileType) (err error) {
 
 		_, v := cb.Seek(id)
 
-		var gallery GalleryType
+		var gallery m.GalleryType
 
 		err = json.Unmarshal(v, &gallery)
 		if err != nil {

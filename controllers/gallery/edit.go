@@ -8,13 +8,14 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
-// GalleryEditController edits gallery details
-func GalleryEditController(c *gin.Context) {
+// EditController edits gallery details
+func EditController(c *gin.Context) {
 	var err error
-	var gallery GalleryType
+	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -54,7 +55,7 @@ func GalleryEditController(c *gin.Context) {
 
 	vals := struct {
 		Meta    u.Metadata
-		Gallery GalleryType
+		Gallery m.GalleryType
 	}{
 		Meta:    metadata,
 		Gallery: gallery,
