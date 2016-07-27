@@ -28,7 +28,7 @@ func ViewController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("GalleryController")
+		c.Error(err).SetMeta("image.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -68,7 +68,7 @@ func ViewController(c *gin.Context) {
 		return
 	})
 	if err != nil {
-		c.Error(err).SetMeta("GalleryController")
+		c.Error(err).SetMeta("image.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

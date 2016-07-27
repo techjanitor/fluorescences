@@ -26,7 +26,7 @@ func UpdateController(c *gin.Context) {
 
 	err = c.Bind(&uf)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryUpdateController.Bind")
+		c.Error(err).SetMeta("gallery.UpdateController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -40,7 +40,7 @@ func UpdateController(c *gin.Context) {
 
 	err = UpdateGallery(blog)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryUpdateController.UpdateGallery")
+		c.Error(err).SetMeta("gallery.UpdateController.UpdateGallery")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -54,7 +54,6 @@ func UpdateController(c *gin.Context) {
 // UpdateGallery will add a blog post
 func UpdateGallery(blog *m.GalleryType) (err error) {
 
-	// put the tumble in the database
 	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
 		b := tx.Bucket([]byte(u.GalleryDB))
 
@@ -74,13 +73,11 @@ func UpdateGallery(blog *m.GalleryType) (err error) {
 		gallery.Title = blog.Title
 		gallery.Desc = blog.Desc
 
-		// encode our roomconfig
 		encoded, err := json.Marshal(gallery)
 		if err != nil {
 			return
 		}
 
-		// put the blog post
 		err = b.Put(id, encoded)
 		if err != nil {
 			return

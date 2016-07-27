@@ -11,9 +11,12 @@ import (
 	"github.com/gin-gonic/gin"
 
 	c "fluorescences/controllers"
+
+	u "fluorescences/utils"
+
 	blog "fluorescences/controllers/blog"
 	gallery "fluorescences/controllers/gallery"
-	u "fluorescences/utils"
+	image "fluorescences/controllers/image"
 
 	"github.com/eirka/eirka-libs/csrf"
 )
@@ -66,10 +69,11 @@ func main() {
 	admin.POST("/blog/new", blog.PostController)
 
 	admin.GET("/gallery", gallery.NewController)
-	admin.GET("/gallery/:id", gallery.EditController)
+	admin.GET("/gallery/edit/:id", gallery.EditController)
 	admin.POST("/gallery/new", gallery.PostController)
 	admin.POST("/gallery/update", gallery.UpdateController)
-	admin.POST("/gallery/image/new", c.ImageNewController)
+	admin.POST("/gallery/image/new", image.NewController)
+	admin.POST("/gallery/image/delete", image.DeleteController)
 
 	s := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),

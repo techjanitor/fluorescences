@@ -12,19 +12,19 @@ import (
 	u "fluorescences/utils"
 )
 
-// ImageNewForm is the input from the new image form
-type ImageNewForm struct {
+// NewForm is the input from the new image form
+type NewForm struct {
 	ID int `form:"id" binding:"required"`
 }
 
-// ImageNewController posts new blogs
-func ImageNewController(c *gin.Context) {
+// NewController posts new blogs
+func NewController(c *gin.Context) {
 	var err error
-	var inf ImageNewForm
+	var inf NewForm
 
 	err = c.Bind(&inf)
 	if err != nil {
-		c.Error(err).SetMeta("ImageNewController.Bind")
+		c.Error(err).SetMeta("image.NewController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -32,21 +32,21 @@ func ImageNewController(c *gin.Context) {
 	// Check if theres a file
 	upload, fileheader, err := c.Request.FormFile("file")
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController")
+		c.Error(err).SetMeta("image.NewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	file, err := u.SaveFile(upload, fileheader.Filename)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController.SaveFile")
+		c.Error(err).SetMeta("image.NewController.SaveFile")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	err = AddImage(inf.ID, file)
 	if err != nil {
-		c.Error(err).SetMeta("ImageNewController.AddImage")
+		c.Error(err).SetMeta("image.NewController.AddImage")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -60,7 +60,6 @@ func ImageNewController(c *gin.Context) {
 // AddImage will add a blog post
 func AddImage(gid int, file u.FileType) (err error) {
 
-	// put the tumble in the database
 	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
 		b := tx.Bucket([]byte(u.GalleryDB))
 
@@ -79,13 +78,18 @@ func AddImage(gid int, file u.FileType) (err error) {
 
 		sort.Sort(gallery.Files)
 
-		lid := gallery.Files[len(gallery.Files)-1]
-
-		file.ID = lid.ID + 1
+		// set the id for the file
+		if len(gallery.Files) == 0 {
+			// if this is the first file
+			file.ID = 1
+		} else {
+			// use the next sequential number
+			lid := gallery.Files[len(gallery.Files)-1]
+			file.ID = lid.ID + 1
+		}
 
 		gallery.Files = append(gallery.Files, file)
 
-		// encode our roomconfig
 		encoded, err := json.Marshal(gallery)
 		if err != nil {
 			return

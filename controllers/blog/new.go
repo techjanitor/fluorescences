@@ -14,7 +14,7 @@ func NewController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("BlogNewController")
+		c.Error(err).SetMeta("blog.NewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

@@ -25,7 +25,7 @@ func PostController(c *gin.Context) {
 
 	err = c.Bind(&nf)
 	if err != nil {
-		c.Error(err).SetMeta("BlogPostController")
+		c.Error(err).SetMeta("blog.PostController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -39,7 +39,7 @@ func PostController(c *gin.Context) {
 
 	err = AddBlog(blog)
 	if err != nil {
-		c.Error(err).SetMeta("BlogPostController.AddBlog")
+		c.Error(err).SetMeta("blog.PostController.AddBlog")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -62,7 +62,6 @@ func AddBlog(blog m.BlogType) (err error) {
 
 		blog.ID = int(id)
 
-		// encode our roomconfig
 		encoded, err := json.Marshal(blog)
 		if err != nil {
 			return

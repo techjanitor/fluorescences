@@ -19,7 +19,7 @@ func EditController(c *gin.Context) {
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.Error(err).SetMeta("ComicController")
+		c.Error(err).SetMeta("gallery.EditController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -27,7 +27,7 @@ func EditController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("GalleryEditController")
+		c.Error(err).SetMeta("gallery.EditController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -48,7 +48,7 @@ func EditController(c *gin.Context) {
 		return
 	})
 	if err != nil {
-		c.Error(err).SetMeta("ComicController")
+		c.Error(err).SetMeta("gallery.EditController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

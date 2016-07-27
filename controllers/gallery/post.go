@@ -25,7 +25,7 @@ func PostController(c *gin.Context) {
 
 	err = c.Bind(&nf)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController.Bind")
+		c.Error(err).SetMeta("gallery.PostController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -36,14 +36,14 @@ func PostController(c *gin.Context) {
 	// Check if theres a file
 	upload, fileheader, err := c.Request.FormFile("file")
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController")
+		c.Error(err).SetMeta("gallery.PostController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	file, err := u.SaveFile(upload, fileheader.Filename)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController.SaveFile")
+		c.Error(err).SetMeta("gallery.PostController.SaveFile")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -63,7 +63,7 @@ func PostController(c *gin.Context) {
 
 	err = AddGallery(blog)
 	if err != nil {
-		c.Error(err).SetMeta("GalleryPostController.AddGallery")
+		c.Error(err).SetMeta("gallery.PostController.AddGallery")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -86,13 +86,12 @@ func AddGallery(blog *m.GalleryType) (err error) {
 
 		blog.ID = int(id)
 
-		// encode our roomconfig
 		encoded, err := json.Marshal(blog)
 		if err != nil {
 			return
 		}
 
-		// put the blog post
+		// put the gallery
 		err = bucket.Put(u.Itob(blog.ID), encoded)
 		if err != nil {
 			return

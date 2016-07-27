@@ -1,55 +1,59 @@
 {{ template "base" .}}
 <div class="admin">
-  <form action="/admin/gallery/update" method="post" enctype="multipart/form-data">
-    <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
-    <div class="form-group">
-      <input class="form-control" name="title" placeholder="Title" value="{{.Gallery.Title}}" />
-    </div>
-    <div class="form-group">
-      <textarea placeholder="Description" class="form-control" rows="5" name="desc">{{.Gallery.Desc}}</textarea>
-    </div>
-    <div class="form-group">
-      <button class="button button-default form-control" type="submit" value="Submit">Update</button>
-    </div>
-  </form>
+    <form action="/admin/gallery/update" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
+        <div class="form-group">
+            <input class="form-control" name="title" placeholder="Title" value="{{.Gallery.Title}}" />
+        </div>
+        <div class="form-group">
+            <textarea placeholder="Description" class="form-control" rows="5" name="desc">{{.Gallery.Desc}}</textarea>
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Update</button>
+        </div>
+    </form>
 </div>
 <div class="admin">
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align:left;">File</th>
-        <th style="text-align:center;">Up</th>
-        <th style="text-align:center;">Down</th>
-        <th style="text-align:center;">Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{range $file := .Gallery.Files}}
-      <tr>
-        <td style="width:auto;text-align:left;">
-          {{$file.Filename}}
-        </td>
-        <td style="width:3em;text-align:center;" align="center">
-        </td>
-        <td style="width:3em;text-align:center;" align="center">
-        </td>
-        <td style="width:3em;text-align:center;" align="center">
-          <a class="button button-danger" href="/admin/delete/image/{{$.Gallery.ID}}/{{$file.ID}}">Delete</a>
-        </td>
-      </tr>
-      {{end}}
-    </tbody>
-  </table>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left;">File</th>
+                <th style="text-align:center;">Up</th>
+                <th style="text-align:center;">Down</th>
+                <th style="text-align:center;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $file := .Gallery.Files}}
+            <tr>
+                <td style="width:auto;text-align:left;">
+                    {{$file.Filename}}
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <form action="/admin/gallery/image/delete" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="gallery" value="{{$.Gallery.ID}}" />
+                        <input class="form-control" type="hidden" name="image" value="{{$file.ID}}" />
+                        <button class="button button-danger form-control" type="submit" value="Submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
 </div>
 <div class="admin">
-  <form action="/admin/gallery/image/new" method="post" enctype="multipart/form-data">
-    <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
-    <div class="form-group">
-      <input type="file" name="file" />
-    </div>
-    <div class="form-group">
-      <button class="button button-default form-control" type="submit" value="Submit">Add Image</button>
-    </div>
-  </form>
+    <form action="/admin/gallery/image/new" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
+        <div class="form-group">
+            <input type="file" name="file" />
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Add Image</button>
+        </div>
+    </form>
 </div>
 {{ template "footer" .}}
