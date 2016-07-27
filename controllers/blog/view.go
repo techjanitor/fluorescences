@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -36,9 +35,10 @@ func ViewController(c *gin.Context) {
 		return
 	}
 
+	// get a count of the blogs
 	total, err := u.Storm.Count(&m.BlogType{})
 	if err != nil {
-		c.Error(err).SetMeta("blog.ViewController.Storm")
+		c.Error(err).SetMeta("blog.ViewController.Count")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -49,11 +49,10 @@ func ViewController(c *gin.Context) {
 	paginate.PerPage = 10
 	paginate.Desc()
 
-	fmt.Println(paginate)
-
-	err = u.Storm.All(&posts, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip))
+	// get all the blog posts with a limit
+	err = u.Storm.All(&posts, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip), storm.Reverse())
 	if err != nil {
-		c.Error(err).SetMeta("blog.ViewController.Storm")
+		c.Error(err).SetMeta("blog.ViewController.All")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

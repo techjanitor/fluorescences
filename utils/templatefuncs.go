@@ -2,8 +2,8 @@ package utils
 
 import "html/template"
 
-func add(x, y int) int {
-	return x + y
+func add(offset, x, y int) int {
+	return offset + x + y
 }
 
 // TemplateFuncs holds our template functions

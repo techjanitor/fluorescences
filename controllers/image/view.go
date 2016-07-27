@@ -34,7 +34,7 @@ func ViewController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("image.ViewController")
+		c.Error(err).SetMeta("image.ViewController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -42,7 +42,12 @@ func ViewController(c *gin.Context) {
 	var image m.FileType
 	var title string
 
-	u.Storm.One("ID", comicID, &gallery)
+	err = u.Storm.One("ID", comicID, &gallery)
+	if err != nil {
+		c.Error(err).SetMeta("image.ViewController.One")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
 
 	paginate.Path = "/image/" + c.Param("id")
 	paginate.CurrentPage = currentPage

@@ -549,6 +549,11 @@ a {
   color: #242629;
   border: 1px solid #b9b9b9; }
 
+.notification_subcontainer {
+  background-color: #ffeaea;
+  color: #242629;
+  border: 1px solid #b9b9b9; }
+
 .subcontainer_author,
 .subcontainer_info {
   color: #a7a7a7; }
@@ -616,40 +621,61 @@ a {
       padding: 1em;
       width: 80%; } }
 
+.notification_subcontainer,
 .blog_subcontainer {
   width: 100%;
   border-radius: 4px;
   overflow: hidden;
   text-align: left;
   margin-bottom: 1em; }
+  .notification_subcontainer .subcontainer_content,
   .blog_subcontainer .subcontainer_content {
     padding: 1em; }
+    .notification_subcontainer .subcontainer_content img,
     .blog_subcontainer .subcontainer_content img {
       max-width: 100%; }
       @media screen and (min-width: 50em) {
+        .notification_subcontainer .subcontainer_content img,
         .blog_subcontainer .subcontainer_content img {
           max-height: 400px; } }
+  .notification_subcontainer .subcontainer_header,
   .blog_subcontainer .subcontainer_header {
     padding: 1em; }
-    .blog_subcontainer .subcontainer_header:before, .blog_subcontainer .subcontainer_header:after {
+    .notification_subcontainer .subcontainer_header:before, .notification_subcontainer .subcontainer_header:after,
+    .blog_subcontainer .subcontainer_header:before,
+    .blog_subcontainer .subcontainer_header:after {
       content: " ";
       display: table; }
+    .notification_subcontainer .subcontainer_header:after,
     .blog_subcontainer .subcontainer_header:after {
       clear: both; }
+  .notification_subcontainer .subcontainer_notificiation,
+  .blog_subcontainer .subcontainer_notificiation {
+    display: inline-block;
+    float: left;
+    width: 50%; }
+    .notification_subcontainer .subcontainer_notificiation p,
+    .blog_subcontainer .subcontainer_notificiation p {
+      display: inline;
+      margin-left: 0.5em; }
+  .notification_subcontainer .subcontainer_title,
   .blog_subcontainer .subcontainer_title {
     display: inline-block;
     float: left;
     width: 50%;
     font-size: 1.2em; }
+  .notification_subcontainer .subcontainer_info,
   .blog_subcontainer .subcontainer_info {
     display: inline-block;
     float: right;
     width: 50%;
     text-align: right;
     font-size: 0.8em; }
+  .notification_subcontainer .subcontainer_footer,
   .blog_subcontainer .subcontainer_footer {
     padding: 0.5em 1em;
     padding-bottom: 1em; }
+  .notification_subcontainer .subcontainer_author,
   .blog_subcontainer .subcontainer_author {
     font-size: 0.8em; }
 

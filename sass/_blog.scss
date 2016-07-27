@@ -9,6 +9,7 @@
   }
 }
 
+.notification_subcontainer,
 .blog_subcontainer {
   width: 100%;
   border-radius: 4px;
@@ -32,6 +33,17 @@
     @include clearfix;
 
     padding: 1em;
+  }
+
+  & .subcontainer_notificiation {
+    display: inline-block;
+    float: left;
+    width: 50%;
+
+    & p {
+      display: inline;
+      margin-left: 0.5em;
+    }
   }
 
   & .subcontainer_title {

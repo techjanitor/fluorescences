@@ -32,25 +32,25 @@ func DeleteController(c *gin.Context) {
 
 	err = u.Storm.One("ID", df.Gallery, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("image.DeleteController")
+		c.Error(err).SetMeta("image.DeleteController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	sort.Sort(gallery.Files)
 
+	// remove the file from the slice
 	for i := len(gallery.Files) - 1; i >= 0; i-- {
 		file := gallery.Files[i]
 
 		if file.ID == df.Image {
-			gallery.Files = append(gallery.Files[:i],
-				gallery.Files[i+1:]...)
+			gallery.Files = append(gallery.Files[:i], gallery.Files[i+1:]...)
 		}
 	}
 
 	err = u.Storm.Save(&gallery)
 	if err != nil {
-		c.Error(err).SetMeta("image.DeleteController")
+		c.Error(err).SetMeta("image.DeleteController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

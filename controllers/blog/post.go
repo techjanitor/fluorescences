@@ -23,7 +23,7 @@ func PostController(c *gin.Context) {
 
 	err = c.Bind(&nf)
 	if err != nil {
-		c.Error(err).SetMeta("blog.PostController")
+		c.Error(err).SetMeta("blog.PostController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

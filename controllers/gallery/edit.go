@@ -25,14 +25,15 @@ func EditController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("gallery.EditController")
+		c.Error(err).SetMeta("gallery.EditController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
+	// get the gallery from bolt
 	err = u.Storm.One("ID", comicID, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.EditController.Storm")
+		c.Error(err).SetMeta("gallery.EditController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

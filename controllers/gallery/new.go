@@ -9,13 +9,13 @@ import (
 	u "fluorescences/utils"
 )
 
-// NewController posts new galleries
+// NewController is the handler for the page where you create a new gallery
 func NewController(c *gin.Context) {
 
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("gallery.NewController")
+		c.Error(err).SetMeta("gallery.NewController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

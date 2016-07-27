@@ -30,7 +30,7 @@ func NewController(c *gin.Context) {
 	// Check if theres a file
 	upload, fileheader, err := c.Request.FormFile("file")
 	if err != nil {
-		c.Error(err).SetMeta("image.NewController")
+		c.Error(err).SetMeta("image.NewController.FormFile")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -60,7 +60,10 @@ func AddImage(gid int, file m.FileType) (err error) {
 
 	var gallery m.GalleryType
 
-	u.Storm.One("ID", gid, &gallery)
+	err = u.Storm.One("ID", gid, &gallery)
+	if err != nil {
+		return
+	}
 
 	sort.Sort(gallery.Files)
 
@@ -76,7 +79,10 @@ func AddImage(gid int, file m.FileType) (err error) {
 
 	gallery.Files = append(gallery.Files, file)
 
-	u.Storm.Save(&gallery)
+	err = u.Storm.Save(&gallery)
+	if err != nil {
+		return
+	}
 
 	return
 

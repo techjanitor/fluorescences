@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -22,7 +23,7 @@ func AdminPanelController(c *gin.Context) {
 		return
 	}
 
-	u.Storm.All(&galleries)
+	u.Storm.All(&galleries, storm.Reverse())
 
 	// values for template
 	vals := struct {

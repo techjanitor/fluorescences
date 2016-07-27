@@ -30,9 +30,10 @@ func UpdateController(c *gin.Context) {
 
 	var gallery m.GalleryType
 
+	// get gallery details
 	err = u.Storm.One("ID", uf.ID, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController")
+		c.Error(err).SetMeta("gallery.UpdateController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -40,6 +41,7 @@ func UpdateController(c *gin.Context) {
 	gallery.Title = uf.Title
 	gallery.Desc = uf.Desc
 
+	// save with updated info
 	err = u.Storm.Save(&gallery)
 	if err != nil {
 		c.Error(err).SetMeta("gallery.UpdateController.Save")

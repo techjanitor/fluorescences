@@ -2,4 +2,4 @@
 config.codekit
 config.rb
 images/*
-bolt.db
+data.db

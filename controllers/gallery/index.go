@@ -28,14 +28,15 @@ func IndexController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("gallery.IndexController")
+		c.Error(err).SetMeta("gallery.IndexController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
+	// get a count of the galleries for generating pagination
 	total, err := u.Storm.Count(&m.GalleryType{})
 	if err != nil {
-		c.Error(err).SetMeta("blog.ViewController.Storm")
+		c.Error(err).SetMeta("blog.ViewController.Count")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -43,14 +44,15 @@ func IndexController(c *gin.Context) {
 	paginate.Path = "/comics"
 	paginate.CurrentPage = currentPage
 	paginate.Total = total
-	paginate.PerPage = 5
+	paginate.PerPage = 6
 	paginate.Desc()
 
 	fmt.Println(paginate)
 
-	err = u.Storm.All(&galleries, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip))
+	// get all the galleries with a limit
+	err = u.Storm.All(&galleries, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip), storm.Reverse())
 	if err != nil {
-		c.Error(err).SetMeta("blog.ViewController.Storm")
+		c.Error(err).SetMeta("blog.ViewController.All")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

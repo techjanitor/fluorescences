@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -16,7 +17,7 @@ type NewForm struct {
 	Desc  string `form:"desc" binding:"required"`
 }
 
-// PostController posts new blogs
+// PostController posts new galleries
 func PostController(c *gin.Context) {
 	var err error
 	var nf NewForm
@@ -34,7 +35,7 @@ func PostController(c *gin.Context) {
 	// Check if theres a file
 	upload, fileheader, err := c.Request.FormFile("file")
 	if err != nil {
-		c.Error(err).SetMeta("gallery.PostController")
+		c.Error(err).SetMeta("gallery.PostController.FormFile")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -59,12 +60,41 @@ func PostController(c *gin.Context) {
 		Files:      files,
 	}
 
-	err = u.Storm.Save(&gallery)
+	// start transaction
+	tx, err := u.Storm.Begin(true)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.PostController.Begin")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+	defer tx.Rollback()
+
+	// save gallery
+	err = tx.Save(&gallery)
 	if err != nil {
 		c.Error(err).SetMeta("gallery.PostController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
+
+	notification := m.BlogType{
+		User:          "test",
+		Notificiation: true,
+		StoredTime:    time.Now(),
+		Title:         "New Gallery",
+		Content:       fmt.Sprintf("<a href=\"/comic/%d/1\">%s</a>", gallery.ID, gallery.Title),
+	}
+
+	// save blog notification
+	err = tx.Save(&notification)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.PostController.Save")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	// commit
+	tx.Commit()
 
 	c.Redirect(http.StatusFound, "/comics/1")
 

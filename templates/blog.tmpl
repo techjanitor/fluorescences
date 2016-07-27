@@ -1,23 +1,31 @@
-{{template "base" .}}
-{{range $post := .Posts}}
-<div class="blog_subcontainer">
-  <div class="subcontainer_header">
-    <div class="subcontainer_info">
-      {{$post.HumanTime}}
+{{template "base" .}} {{range $post := .Posts}} {{if .Notificiation}}
+<div class="notification_subcontainer">
+    <div class="subcontainer_header">
+        <div class="subcontainer_info">
+            {{$post.HumanTime}}
+        </div>
+        <div class="subcontainer_notificiation">
+            {{$post.Title}}: {{$post.ContentOut}}
+        </div>
     </div>
-    <div class="subcontainer_title">
-      {{$post.Title}}
-    </div>
-  </div>
-  <div class="subcontainer_content">
-    {{$post.ContentOut}}
-  </div>
-  <div class="subcontainer_footer">
-    <div class="subcontainer_author">
-      by {{$post.User}}
-    </div>
-  </div>
 </div>
-{{end}}
-{{template "pagination" .}}
-{{template "footer" .}}
+{{else}}
+<div class="blog_subcontainer">
+    <div class="subcontainer_header">
+        <div class="subcontainer_info">
+            {{$post.HumanTime}}
+        </div>
+        <div class="subcontainer_title">
+            {{$post.Title}}
+        </div>
+    </div>
+    <div class="subcontainer_content">
+        {{$post.ContentOut}}
+    </div>
+    <div class="subcontainer_footer">
+        <div class="subcontainer_author">
+            by {{$post.User}}
+        </div>
+    </div>
+</div>
+{{end}} {{end}} {{template "pagination" .}} {{template "footer" .}}

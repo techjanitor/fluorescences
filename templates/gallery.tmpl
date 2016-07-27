@@ -1,5 +1,6 @@
 {{ template "base" .}}
 {{if .All}}
+{{ template "pagination" .}}
 <div class="gallery">
   {{range $gallery := .Galleries}}
   <a href="comic/{{$gallery.ID}}/1">
@@ -16,9 +17,10 @@
 <div class="comic_title">
   {{.Gallery.Title}}
 </div>
+{{ template "pagination" .}}
 <div class="gallery">
   {{range $i, $file := .Gallery.Files}}
-  <a href="image/{{$.Gallery.ID}}/{{add $i 1}}">
+  <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}">
     <div class="image">
       <img src="images/{{$file.Filename}}" alt="">
     </div>

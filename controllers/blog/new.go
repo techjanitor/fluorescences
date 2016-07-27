@@ -12,10 +12,10 @@ import (
 // NewController posts new blogs
 func NewController(c *gin.Context) {
 
-	// holds out page metadata from settings
+	// holds our page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("blog.NewController")
+		c.Error(err).SetMeta("blog.NewController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

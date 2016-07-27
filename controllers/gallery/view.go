@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -32,23 +33,29 @@ func ViewController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
+		c.Error(err).SetMeta("gallery.ViewController.GetMetadata")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	// get gallery info
+	err = u.Storm.One("ID", comicID, &gallery)
+	if err != nil {
 		c.Error(err).SetMeta("gallery.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	err = u.Storm.One("ID", comicID, &gallery)
-	if err != nil {
-		c.Error(err).SetMeta("gallery.DeleteController")
-		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
-		return
-	}
+	sort.Sort(gallery.Files)
 
 	paginate.Path = "/comic/" + c.Param("id")
 	paginate.CurrentPage = currentPage
 	paginate.Total = len(gallery.Files)
-	paginate.PerPage = 10
-	paginate.Desc()
+	paginate.PerPage = 9
+	paginate.Asc()
+
+	// page through the files slice
+	gallery.Files = pageFiles(gallery.Files, paginate.PerPage, paginate.Skip)
 
 	// values for template
 	vals := struct {
@@ -67,4 +74,18 @@ func ViewController(c *gin.Context) {
 
 	return
 
+}
+
+// pageFiles will page through a files slice with a limit
+func pageFiles(files m.Files, limit, skip int) m.Files {
+	if skip > len(files) {
+		skip = len(files)
+	}
+
+	end := skip + limit
+	if end > len(files) {
+		end = len(files)
+	}
+
+	return files[skip:end]
 }
