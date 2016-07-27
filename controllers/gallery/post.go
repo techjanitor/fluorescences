@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -53,7 +51,7 @@ func PostController(c *gin.Context) {
 
 	files = append(files, file)
 
-	blog := &m.GalleryType{
+	gallery := m.GalleryType{
 		User:       "test",
 		StoredTime: time.Now(),
 		Title:      nf.Title,
@@ -61,48 +59,14 @@ func PostController(c *gin.Context) {
 		Files:      files,
 	}
 
-	err = AddGallery(blog)
+	err = u.Storm.Save(&gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.PostController.AddGallery")
+		c.Error(err).SetMeta("gallery.PostController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	c.Redirect(http.StatusFound, "/comics/1")
-
-	return
-
-}
-
-// AddGallery will add a blog post
-func AddGallery(blog *m.GalleryType) (err error) {
-
-	// put the tumble in the database
-	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		bucket := tx.Bucket([]byte(u.GalleryDB))
-
-		// get a sequence number
-		id, _ := bucket.NextSequence()
-
-		blog.ID = int(id)
-
-		encoded, err := json.Marshal(blog)
-		if err != nil {
-			return
-		}
-
-		// put the gallery
-		err = bucket.Put(u.Itob(blog.ID), encoded)
-		if err != nil {
-			return
-		}
-
-		return
-
-	})
-	if err != nil {
-		return
-	}
 
 	return
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
@@ -20,7 +21,7 @@ func NewController(c *gin.Context) {
 	}
 
 	vals := struct {
-		Meta u.Metadata
+		Meta m.Metadata
 		New  bool
 		Edit bool
 	}{

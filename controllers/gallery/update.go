@@ -1,18 +1,15 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
-	"time"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
-// UpdateForm is the input from the blog form
+// UpdateForm is the input from the gallery panel
 type UpdateForm struct {
 	ID    int    `form:"id" binding:"required"`
 	Title string `form:"title" binding:"required"`
@@ -31,64 +28,26 @@ func UpdateController(c *gin.Context) {
 		return
 	}
 
-	blog := &m.GalleryType{
-		ID:         uf.ID,
-		StoredTime: time.Now(),
-		Title:      uf.Title,
-		Desc:       uf.Desc,
+	var gallery m.GalleryType
+
+	err = u.Storm.One("ID", uf.ID, &gallery)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.UpdateController")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
 	}
 
-	err = UpdateGallery(blog)
+	gallery.Title = uf.Title
+	gallery.Desc = uf.Desc
+
+	err = u.Storm.Save(&gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.UpdateGallery")
+		c.Error(err).SetMeta("gallery.UpdateController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	c.Redirect(http.StatusFound, "/comics/1")
-
-	return
-
-}
-
-// UpdateGallery will add a blog post
-func UpdateGallery(blog *m.GalleryType) (err error) {
-
-	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		b := tx.Bucket([]byte(u.GalleryDB))
-
-		id := u.Itob(blog.ID)
-
-		cb := b.Cursor()
-
-		_, v := cb.Seek(id)
-
-		var gallery m.GalleryType
-
-		err = json.Unmarshal(v, &gallery)
-		if err != nil {
-			return
-		}
-
-		gallery.Title = blog.Title
-		gallery.Desc = blog.Desc
-
-		encoded, err := json.Marshal(gallery)
-		if err != nil {
-			return
-		}
-
-		err = b.Put(id, encoded)
-		if err != nil {
-			return
-		}
-
-		return
-
-	})
-	if err != nil {
-		return
-	}
 
 	return
 

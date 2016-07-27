@@ -8,7 +8,7 @@ import (
 type GalleryType struct {
 	ID         int
 	User       string
-	Title      string
+	Title      string `storm:"unique"`
 	Cover      string
 	Desc       string
 	Private    bool

@@ -1,17 +1,14 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"html/template"
 	"net/http"
-	"os"
 
 	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gin-gonic/gin"
 
 	c "fluorescences/controllers"
-
 	u "fluorescences/utils"
 
 	blog "fluorescences/controllers/blog"
@@ -23,19 +20,8 @@ import (
 
 func main() {
 
-	// make new buckets if they dont exist
-	initialize := flag.Bool("init", false, "Initialize a new database")
-
-	flag.Parse()
-
-	if *initialize {
-		Initialize()
-		os.Exit(0)
-		return
-	}
-
 	// load the site templates
-	t := template.Must(template.New("public").ParseGlob("templates/*.tmpl"))
+	t := template.Must(template.New("public").Funcs(u.TemplateFuncs).ParseGlob("templates/*.tmpl"))
 
 	r := gin.Default()
 
@@ -83,14 +69,4 @@ func main() {
 
 	gracehttp.Serve(s)
 
-}
-
-// Initialize will create a new default database
-func Initialize() {
-	var err error
-
-	err = u.InitMetadata()
-	if err != nil {
-		panic("could not init metadata")
-	}
 }

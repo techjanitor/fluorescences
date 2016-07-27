@@ -1,11 +1,13 @@
 package models
 
-import (
-	u "fluorescences/utils"
-)
+// FileType holds an image file
+type FileType struct {
+	ID       int
+	Filename string
+}
 
 // Files is a slice of FileTypes
-type Files []u.FileType
+type Files []FileType
 
 func (f Files) Len() int {
 	return len(f)

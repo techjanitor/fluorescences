@@ -8,6 +8,7 @@ type Paged struct {
 	PerPage     int    `json:"per_page"`
 	Pages       int    `json:"pages"`
 	CurrentPage int    `json:"current_page"`
+	Skip        int    `json:"skip"`
 	Start       int    `json:"range_start"`
 	End         int    `json:"range_end"`
 	Prev        int    `json:"page_prev"`
@@ -40,6 +41,8 @@ func (p *Paged) Asc() {
 		p.Min = true
 	}
 
+	p.Skip = ((p.CurrentPage - 1) * p.PerPage)
+
 	return
 
 }
@@ -66,6 +69,8 @@ func (p *Paged) Desc() {
 		p.Prev = 1
 		p.Min = true
 	}
+
+	p.Skip = ((p.CurrentPage - 1) * p.PerPage)
 
 	return
 

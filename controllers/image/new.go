@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -17,7 +15,7 @@ type NewForm struct {
 	ID int `form:"id" binding:"required"`
 }
 
-// NewController posts new blogs
+// NewController add an image to a gallery
 func NewController(c *gin.Context) {
 	var err error
 	var inf NewForm
@@ -58,55 +56,27 @@ func NewController(c *gin.Context) {
 }
 
 // AddImage will add a blog post
-func AddImage(gid int, file u.FileType) (err error) {
+func AddImage(gid int, file m.FileType) (err error) {
 
-	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		b := tx.Bucket([]byte(u.GalleryDB))
+	var gallery m.GalleryType
 
-		id := u.Itob(gid)
+	u.Storm.One("ID", gid, &gallery)
 
-		cb := b.Cursor()
+	sort.Sort(gallery.Files)
 
-		_, v := cb.Seek(id)
-
-		var gallery m.GalleryType
-
-		err = json.Unmarshal(v, &gallery)
-		if err != nil {
-			return
-		}
-
-		sort.Sort(gallery.Files)
-
-		// set the id for the file
-		if len(gallery.Files) == 0 {
-			// if this is the first file
-			file.ID = 1
-		} else {
-			// use the next sequential number
-			lid := gallery.Files[len(gallery.Files)-1]
-			file.ID = lid.ID + 1
-		}
-
-		gallery.Files = append(gallery.Files, file)
-
-		encoded, err := json.Marshal(gallery)
-		if err != nil {
-			return
-		}
-
-		// put the blog post
-		err = b.Put(id, encoded)
-		if err != nil {
-			return
-		}
-
-		return
-
-	})
-	if err != nil {
-		return
+	// set the id for the file
+	if len(gallery.Files) == 0 {
+		// if this is the first file
+		file.ID = 1
+	} else {
+		// use the next sequential number
+		lid := gallery.Files[len(gallery.Files)-1]
+		file.ID = lid.ID + 1
 	}
+
+	gallery.Files = append(gallery.Files, file)
+
+	u.Storm.Save(&gallery)
 
 	return
 

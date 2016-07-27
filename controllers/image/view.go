@@ -1,12 +1,10 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 	"strconv"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -32,6 +30,7 @@ func ViewController(c *gin.Context) {
 
 	// holds our pagination data
 	paginate := u.Paged{}
+
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
@@ -40,53 +39,35 @@ func ViewController(c *gin.Context) {
 		return
 	}
 
-	var image u.FileType
+	var image m.FileType
 	var title string
 
-	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
-		// the blog bucket
-		b := tx.Bucket([]byte(u.GalleryDB))
+	u.Storm.One("ID", comicID, &gallery)
 
-		cb := b.Cursor()
+	paginate.Path = "/image/" + c.Param("id")
+	paginate.CurrentPage = currentPage
+	paginate.Total = len(gallery.Files)
+	paginate.PerPage = 1
+	paginate.Desc()
 
-		_, v := cb.Seek(u.Itob(comicID))
+	sort.Sort(gallery.Files)
 
-		err = json.Unmarshal(v, &gallery)
-		if err != nil {
-			return
+	for i, c := range gallery.Files {
+		i++
+		if i == currentPage {
+			image = c
 		}
-
-		paginate.Path = "/image/" + c.Param("id")
-		paginate.CurrentPage = currentPage
-		paginate.Total = len(gallery.Files)
-		paginate.PerPage = 1
-		paginate.Desc()
-
-		sort.Sort(gallery.Files)
-
-		for _, c := range gallery.Files {
-			if c.ID == currentPage {
-				image = c
-			}
-		}
-
-		title = gallery.Title
-
-		return
-	})
-	if err != nil {
-		c.Error(err).SetMeta("image.ViewController")
-		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
-		return
 	}
+
+	title = gallery.Title
 
 	// values for template
 	vals := struct {
-		Meta  u.Metadata
+		Meta  m.Metadata
 		Paged u.Paged
 		Comic int
 		Title string
-		Image u.FileType
+		Image m.FileType
 	}{
 		Meta:  metadata,
 		Paged: paginate,

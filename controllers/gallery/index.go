@@ -1,13 +1,11 @@
 package controllers
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/boltdb/bolt"
+	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -17,7 +15,7 @@ import (
 // IndexController handles the galleries index page
 func IndexController(c *gin.Context) {
 	var err error
-	var galleries []m.GalleryType
+	var galleries []*m.GalleryType
 
 	currentPage, _ := strconv.Atoi(c.Param("page"))
 	if currentPage < 1 {
@@ -26,6 +24,7 @@ func IndexController(c *gin.Context) {
 
 	// holds our pagination data
 	paginate := u.Paged{}
+
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
@@ -34,53 +33,40 @@ func IndexController(c *gin.Context) {
 		return
 	}
 
-	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
-		// the blog bucket
-		b := tx.Bucket([]byte(u.GalleryDB))
-
-		// stats for key count
-		stats := b.Stats()
-
-		fmt.Println(stats.KeyN)
-
-		paginate.Path = "/comics"
-		paginate.CurrentPage = currentPage
-		paginate.Total = stats.KeyN
-		paginate.PerPage = 10
-		paginate.Desc()
-
-		cb := b.Cursor()
-
-		for k, v := cb.Seek(u.Itob(paginate.Start)); k != nil && !bytes.Equal(k, u.Itob(paginate.End)); k, v = cb.Prev() {
-
-			gallery := m.GalleryType{}
-
-			err = json.Unmarshal(v, &gallery)
-			if err != nil {
-				return
-			}
-
-			// convert time
-			gallery.HumanTime = gallery.StoredTime.Format("2006-01-02")
-
-			gallery.Cover = gallery.Files[0].Filename
-
-			galleries = append(galleries, gallery)
-
-		}
-		return
-	})
+	total, err := u.Storm.Count(&m.GalleryType{})
 	if err != nil {
-		c.Error(err).SetMeta("gallery.IndexController")
+		c.Error(err).SetMeta("blog.ViewController.Storm")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
+	paginate.Path = "/comics"
+	paginate.CurrentPage = currentPage
+	paginate.Total = total
+	paginate.PerPage = 5
+	paginate.Desc()
+
+	fmt.Println(paginate)
+
+	err = u.Storm.All(&galleries, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip))
+	if err != nil {
+		c.Error(err).SetMeta("blog.ViewController.Storm")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	for _, gallery := range galleries {
+		// convert time
+		gallery.HumanTime = gallery.StoredTime.Format("2006-01-02")
+		// cover image is the first image in the slice
+		gallery.Cover = gallery.Files[0].Filename
+	}
+
 	// values for template
 	vals := struct {
-		Meta      u.Metadata
+		Meta      m.Metadata
 		Paged     u.Paged
-		Galleries []m.GalleryType
+		Galleries []*m.GalleryType
 		All       bool
 	}{
 		Meta:      metadata,

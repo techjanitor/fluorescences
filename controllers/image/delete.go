@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -30,66 +28,34 @@ func DeleteController(c *gin.Context) {
 		return
 	}
 
-	err = DeleteImage(df.Gallery, df.Image)
+	var gallery m.GalleryType
+
+	err = u.Storm.One("ID", df.Gallery, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("image.DeleteController.DeleteImage")
+		c.Error(err).SetMeta("image.DeleteController")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	sort.Sort(gallery.Files)
+
+	for i := len(gallery.Files) - 1; i >= 0; i-- {
+		file := gallery.Files[i]
+
+		if file.ID == df.Image {
+			gallery.Files = append(gallery.Files[:i],
+				gallery.Files[i+1:]...)
+		}
+	}
+
+	err = u.Storm.Save(&gallery)
+	if err != nil {
+		c.Error(err).SetMeta("image.DeleteController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	c.Redirect(http.StatusFound, c.Request.Referer())
-
-	return
-
-}
-
-// DeleteImage will delete an image
-func DeleteImage(gallery, image int) (err error) {
-
-	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		b := tx.Bucket([]byte(u.GalleryDB))
-
-		id := u.Itob(gallery)
-
-		cb := b.Cursor()
-
-		_, v := cb.Seek(id)
-
-		var gallery m.GalleryType
-
-		err = json.Unmarshal(v, &gallery)
-		if err != nil {
-			return
-		}
-
-		sort.Sort(gallery.Files)
-
-		for i := len(gallery.Files) - 1; i >= 0; i-- {
-			file := gallery.Files[i]
-
-			if file.ID == image {
-				gallery.Files = append(gallery.Files[:i],
-					gallery.Files[i+1:]...)
-			}
-		}
-
-		encoded, err := json.Marshal(gallery)
-		if err != nil {
-			return
-		}
-
-		// put the blog post
-		err = b.Put(id, encoded)
-		if err != nil {
-			return
-		}
-
-		return
-
-	})
-	if err != nil {
-		return
-	}
 
 	return
 

@@ -4,16 +4,12 @@ import (
 	"io"
 	"mime/multipart"
 	"os"
+
+	m "fluorescences/models"
 )
 
-// FileType holds an image file
-type FileType struct {
-	ID       int
-	Filename string
-}
-
 // SaveFile saves an uploaded file to disk
-func SaveFile(file multipart.File, filename string) (filetype FileType, err error) {
+func SaveFile(file multipart.File, filename string) (filetype m.FileType, err error) {
 
 	var dst *os.File
 
@@ -28,7 +24,7 @@ func SaveFile(file multipart.File, filename string) (filetype FileType, err erro
 		return
 	}
 
-	filetype = FileType{
+	filetype = m.FileType{
 		Filename: filename,
 	}
 

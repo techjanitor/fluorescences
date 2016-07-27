@@ -17,8 +17,8 @@
   {{.Gallery.Title}}
 </div>
 <div class="gallery">
-  {{range $file := .Gallery.Files}}
-  <a href="image/{{$.Gallery.ID}}/{{$file.ID}}">
+  {{range $i, $file := .Gallery.Files}}
+  <a href="image/{{$.Gallery.ID}}/{{add $i 1}}">
     <div class="image">
       <img src="images/{{$file.Filename}}" alt="">
     </div>

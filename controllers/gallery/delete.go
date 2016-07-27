@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
@@ -26,35 +26,23 @@ func DeleteController(c *gin.Context) {
 		return
 	}
 
-	err = DeleteGallery(df.Gallery)
+	var gallery m.GalleryType
+
+	err = u.Storm.One("ID", df.Gallery, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.DeleteController.DeleteGallery")
+		c.Error(err).SetMeta("gallery.DeleteController")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	err = u.Storm.Remove(&gallery)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.DeleteController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	c.Redirect(http.StatusFound, c.Request.Referer())
-
-	return
-
-}
-
-// DeleteGallery will delete a gallery
-func DeleteGallery(gallery int) (err error) {
-
-	err = u.Bolt.Update(func(tx *bolt.Tx) (err error) {
-		b := tx.Bucket([]byte(u.GalleryDB))
-
-		id := u.Itob(gallery)
-
-		b.Delete(id)
-
-		return
-
-	})
-	if err != nil {
-		return
-	}
 
 	return
 

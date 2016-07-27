@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -32,29 +30,15 @@ func EditController(c *gin.Context) {
 		return
 	}
 
-	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
-		// the blog bucket
-		b := tx.Bucket([]byte(u.GalleryDB))
-
-		cb := b.Cursor()
-
-		_, v := cb.Seek(u.Itob(comicID))
-
-		err = json.Unmarshal(v, &gallery)
-		if err != nil {
-			return
-		}
-
-		return
-	})
+	err = u.Storm.One("ID", comicID, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.EditController")
+		c.Error(err).SetMeta("gallery.EditController.Storm")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	vals := struct {
-		Meta    u.Metadata
+		Meta    m.Metadata
 		Gallery m.GalleryType
 	}{
 		Meta:    metadata,

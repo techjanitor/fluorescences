@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
 	m "fluorescences/models"
@@ -39,36 +37,22 @@ func ViewController(c *gin.Context) {
 		return
 	}
 
-	err = u.Bolt.View(func(tx *bolt.Tx) (err error) {
-		// the blog bucket
-		b := tx.Bucket([]byte(u.GalleryDB))
-
-		cb := b.Cursor()
-
-		_, v := cb.Seek(u.Itob(comicID))
-
-		err = json.Unmarshal(v, &gallery)
-		if err != nil {
-			return
-		}
-
-		paginate.Path = "/comic/" + c.Param("id")
-		paginate.CurrentPage = currentPage
-		paginate.Total = len(gallery.Files)
-		paginate.PerPage = 10
-		paginate.Desc()
-
-		return
-	})
+	err = u.Storm.One("ID", comicID, &gallery)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.ViewController")
+		c.Error(err).SetMeta("gallery.DeleteController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
+	paginate.Path = "/comic/" + c.Param("id")
+	paginate.CurrentPage = currentPage
+	paginate.Total = len(gallery.Files)
+	paginate.PerPage = 10
+	paginate.Desc()
+
 	// values for template
 	vals := struct {
-		Meta    u.Metadata
+		Meta    m.Metadata
 		Paged   u.Paged
 		Gallery m.GalleryType
 		All     bool
