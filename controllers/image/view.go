@@ -13,14 +13,14 @@ import (
 	u "fluorescences/utils"
 )
 
-// ImageController handles the comic image pages
-func ImageController(c *gin.Context) {
+// ViewController handles the comic image pages
+func ViewController(c *gin.Context) {
 	var err error
 	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.Error(err).SetMeta("ImageController")
+		c.Error(err).SetMeta("image.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -35,7 +35,7 @@ func ImageController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("ImageController")
+		c.Error(err).SetMeta("image.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -75,7 +75,7 @@ func ImageController(c *gin.Context) {
 		return
 	})
 	if err != nil {
-		c.Error(err).SetMeta("ImageController")
+		c.Error(err).SetMeta("image.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

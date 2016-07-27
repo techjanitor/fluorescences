@@ -11,7 +11,6 @@ type GalleryType struct {
 	Title      string
 	Cover      string
 	Desc       string
-	Hidden     bool
 	Private    bool
 	HumanTime  string
 	OpenTime   time.Time

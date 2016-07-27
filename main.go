@@ -56,9 +56,9 @@ func main() {
 
 	public.GET("/", blog.ViewController)
 	public.GET("/blog/:page", blog.ViewController)
-	public.GET("/comics/:page", gallery.ViewController)
-	public.GET("/comic/:id/:page", c.ComicController)
-	public.GET("/image/:id/:page", c.ImageController)
+	public.GET("/comics/:page", gallery.IndexController)
+	public.GET("/comic/:id/:page", gallery.ViewController)
+	public.GET("/image/:id/:page", image.ViewController)
 
 	// routing group for admin handlers
 	admin := r.Group("/admin")
@@ -71,6 +71,7 @@ func main() {
 	admin.GET("/gallery", gallery.NewController)
 	admin.GET("/gallery/edit/:id", gallery.EditController)
 	admin.POST("/gallery/new", gallery.PostController)
+	admin.POST("/gallery/delete", gallery.DeleteController)
 	admin.POST("/gallery/update", gallery.UpdateController)
 	admin.POST("/gallery/image/new", image.NewController)
 	admin.POST("/gallery/image/delete", image.DeleteController)

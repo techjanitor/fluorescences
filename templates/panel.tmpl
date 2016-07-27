@@ -1,37 +1,37 @@
 {{ template "base" .}}
 <div class="admin">
-
-<div class="gallery_info">
-  <table>
-    <thead>
-          <tr>
-  <th style="text-align:left;">Title</th>
-  <th style="text-align:center;">Hidden</th>
-  <th style="text-align:center;">Private</th>
-  <th style="text-align:center;">Edit</th>
-          </tr>
-      </thead>
-          <tbody>
-{{range $gallery := .Galleries}}
-<tr>
-<td style="width:auto;text-align:left;">
-{{$gallery.Title}}
-</td>
-<td style="width:3em;text-align:center;" align="center">
-{{$gallery.Hidden}}
-</td>
-<td style="width:3em;text-align:center;" align="center">
-{{$gallery.Private}}
-</td>
-<td style="width:3em;text-align:center;" align="center">
-<a class="button button-primary" href="/admin/gallery/edit/{{$gallery.ID}}">Edit</a>
-</td>
-</tr>
-{{end}}
-
-</tbody>
-</table>
-</div>
-
+    <div class="gallery_info">
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Title</th>
+                    <th style="text-align:center;">Private</th>
+                    <th style="text-align:center;">Edit</th>
+                    <th style="text-align:center;">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $gallery := .Galleries}}
+                <tr>
+                    <td style="width:auto;text-align:left;">
+                        {{$gallery.Title}}
+                    </td>
+                    <td style="width:3em;text-align:center;" align="center">
+                        {{$gallery.Private}}
+                    </td>
+                    <td style="width:3em;text-align:center;" align="center">
+                        <a class="button button-primary" href="/admin/gallery/edit/{{$gallery.ID}}">Edit</a>
+                    </td>
+                    <td style="width:3em;text-align:center;" align="center">
+                        <form action="/admin/gallery/delete" method="post" enctype="multipart/form-data">
+                            <input class="form-control" type="hidden" name="gallery" value="{{$gallery.ID}}" />
+                            <button class="button button-danger" type="submit" value="Submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
 </div>
 {{ template "footer" .}}
