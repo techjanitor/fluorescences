@@ -10,15 +10,15 @@ import (
 	u "fluorescences/utils"
 )
 
-// AdminPanelController is the main admin menu
-func AdminPanelController(c *gin.Context) {
+// GalleryController handles the admin gallery page
+func GalleryController(c *gin.Context) {
 	var err error
 	var galleries []m.GalleryType
 
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("GalleryController")
+		c.Error(err).SetMeta("admin.GalleryController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

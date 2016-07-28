@@ -9,8 +9,7 @@ import (
 	u "fluorescences/utils"
 )
 
-// UpdateForm is the input from the gallery panel
-type UpdateForm struct {
+type updateForm struct {
 	ID    int    `form:"id" binding:"required"`
 	Title string `form:"title" binding:"required"`
 	Desc  string `form:"desc" binding:"required"`
@@ -19,7 +18,7 @@ type UpdateForm struct {
 // UpdateController updates gallery information
 func UpdateController(c *gin.Context) {
 	var err error
-	var uf UpdateForm
+	var uf updateForm
 
 	err = c.Bind(&uf)
 	if err != nil {

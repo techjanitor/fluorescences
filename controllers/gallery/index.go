@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -46,8 +45,6 @@ func IndexController(c *gin.Context) {
 	paginate.Total = total
 	paginate.PerPage = 6
 	paginate.Desc()
-
-	fmt.Println(paginate)
 
 	// get all the galleries with a limit
 	err = u.Storm.All(&galleries, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip), storm.Reverse())

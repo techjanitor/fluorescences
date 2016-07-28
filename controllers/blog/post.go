@@ -10,8 +10,7 @@ import (
 	u "fluorescences/utils"
 )
 
-// NewForm is the input from the blog form
-type NewForm struct {
+type newForm struct {
 	Title string `form:"title" binding:"required"`
 	Post  string `form:"post" binding:"required"`
 }
@@ -19,7 +18,7 @@ type NewForm struct {
 // PostController posts new blogs
 func PostController(c *gin.Context) {
 	var err error
-	var nf NewForm
+	var nf newForm
 
 	err = c.Bind(&nf)
 	if err != nil {

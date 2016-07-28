@@ -10,35 +10,35 @@ import (
 )
 
 type deleteForm struct {
-	Gallery int `form:"gallery" binding:"required"`
+	ID int `form:"id" binding:"required"`
 }
 
-// DeleteController deletes galleries
+// DeleteController deletes blog posts
 func DeleteController(c *gin.Context) {
 	var err error
 	var df deleteForm
 
 	err = c.Bind(&df)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.DeleteController.Bind")
+		c.Error(err).SetMeta("blog.DeleteController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	var gallery m.GalleryType
+	var blog m.BlogType
 
 	// get the gallery from bolt
-	err = u.Storm.One("ID", df.Gallery, &gallery)
+	err = u.Storm.One("ID", df.ID, &blog)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.DeleteController.One")
+		c.Error(err).SetMeta("blog.DeleteController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
 	// delete it
-	err = u.Storm.Remove(&gallery)
+	err = u.Storm.Remove(&blog)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.DeleteController.Remove")
+		c.Error(err).SetMeta("blog.DeleteController.Remove")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

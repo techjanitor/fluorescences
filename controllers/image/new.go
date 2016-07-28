@@ -10,15 +10,14 @@ import (
 	u "fluorescences/utils"
 )
 
-// NewForm is the input from the new image form
-type NewForm struct {
+type newForm struct {
 	ID int `form:"id" binding:"required"`
 }
 
 // NewController add an image to a gallery
 func NewController(c *gin.Context) {
 	var err error
-	var inf NewForm
+	var inf newForm
 
 	err = c.Bind(&inf)
 	if err != nil {

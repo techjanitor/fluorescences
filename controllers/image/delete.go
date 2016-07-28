@@ -10,8 +10,7 @@ import (
 	u "fluorescences/utils"
 )
 
-// DeleteForm takes the input from the delete form
-type DeleteForm struct {
+type deleteForm struct {
 	Gallery int `form:"gallery" binding:"required"`
 	Image   int `form:"image" binding:"required"`
 }
@@ -19,7 +18,7 @@ type DeleteForm struct {
 // DeleteController deletes images from galleries
 func DeleteController(c *gin.Context) {
 	var err error
-	var df DeleteForm
+	var df deleteForm
 
 	err = c.Bind(&df)
 	if err != nil {

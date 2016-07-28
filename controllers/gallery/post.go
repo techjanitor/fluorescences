@@ -11,8 +11,7 @@ import (
 	u "fluorescences/utils"
 )
 
-// NewForm is the input from the gallery form
-type NewForm struct {
+type newForm struct {
 	Title string `form:"title" binding:"required"`
 	Desc  string `form:"desc" binding:"required"`
 }
@@ -20,7 +19,7 @@ type NewForm struct {
 // PostController posts new galleries
 func PostController(c *gin.Context) {
 	var err error
-	var nf NewForm
+	var nf newForm
 
 	err = c.Bind(&nf)
 	if err != nil {

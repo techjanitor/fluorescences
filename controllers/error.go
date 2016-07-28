@@ -6,10 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ErrorController handles error responses
+// ErrorController handles no matching routes
 func ErrorController(c *gin.Context) {
 
-	c.HTML(http.StatusOK, "error.tmpl", nil)
+	c.HTML(http.StatusNotFound, "error.tmpl", nil)
 
 	return
 

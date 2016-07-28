@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 
 	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gin-gonic/gin"
+	"github.com/urfave/cli"
 
 	c "fluorescences/controllers"
 	u "fluorescences/utils"
 
+	admin "fluorescences/controllers/admin"
 	blog "fluorescences/controllers/blog"
 	gallery "fluorescences/controllers/gallery"
 	image "fluorescences/controllers/image"
@@ -19,6 +22,54 @@ import (
 )
 
 func main() {
+
+	app := cli.NewApp()
+
+	app.Name = "Fluorescences"
+	app.Usage = "An art gallery"
+	app.Version = "RC1"
+	app.Copyright = "(c) 2016 Techjanitor"
+
+	app.Commands = []cli.Command{
+		{
+			Name:  "init",
+			Usage: "initialize a component for the first time",
+			Subcommands: []cli.Command{
+				{
+					Name:  "user",
+					Usage: "initialize the user",
+					Action: func(c *cli.Context) error {
+						name := c.Args().First()
+						if name == "" {
+							return cli.NewExitError("username required", 1)
+						}
+						return u.InitUser(name)
+					},
+				},
+				{
+					Name:  "secret",
+					Usage: "initialize the HMAC secret",
+					Action: func(c *cli.Context) error {
+						return u.InitSecret()
+					},
+				},
+			},
+		},
+		{
+			Name:  "start",
+			Usage: "start the server",
+			Action: func(c *cli.Context) error {
+				server()
+				return nil
+			},
+		},
+	}
+
+	app.Run(os.Args)
+
+}
+
+func server() {
 
 	// load the site templates
 	t := template.Must(template.New("public").Funcs(u.TemplateFuncs).ParseGlob("templates/*.tmpl"))
@@ -47,20 +98,22 @@ func main() {
 	public.GET("/image/:id/:page", image.ViewController)
 
 	// routing group for admin handlers
-	admin := r.Group("/admin")
+	authed := r.Group("/admin")
 
-	admin.GET("/panel", c.AdminPanelController)
+	authed.GET("/login", admin.LoginController)
+	authed.GET("/panel", admin.GalleryController)
 
-	admin.GET("/blog", blog.NewController)
-	admin.POST("/blog/new", blog.PostController)
+	authed.GET("/blog", blog.NewController)
+	authed.POST("/blog/new", blog.PostController)
+	authed.POST("/blog/delete", blog.DeleteController)
 
-	admin.GET("/gallery", gallery.NewController)
-	admin.GET("/gallery/edit/:id", gallery.EditController)
-	admin.POST("/gallery/new", gallery.PostController)
-	admin.POST("/gallery/delete", gallery.DeleteController)
-	admin.POST("/gallery/update", gallery.UpdateController)
-	admin.POST("/gallery/image/new", image.NewController)
-	admin.POST("/gallery/image/delete", image.DeleteController)
+	authed.GET("/gallery", gallery.NewController)
+	authed.GET("/gallery/edit/:id", gallery.EditController)
+	authed.POST("/gallery/new", gallery.PostController)
+	authed.POST("/gallery/delete", gallery.DeleteController)
+	authed.POST("/gallery/update", gallery.UpdateController)
+	authed.POST("/gallery/image/new", image.NewController)
+	authed.POST("/gallery/image/delete", image.DeleteController)
 
 	s := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),
