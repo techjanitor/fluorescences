@@ -1,18 +1,19 @@
 {{ template "base" .}}
 <div class="admin">
-  <form action="/admin/gallery/new" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-      <input class="form-control" name="title" placeholder="Title" />
-    </div>
-    <div class="form-group">
-      <textarea placeholder="Description" class="form-control" rows="8" name="desc"></textarea>
-    </div>
-    <div class="form-group">
-      <input type="file" name="file" />
-    </div>
-    <div class="form-group">
-      <button class="button button-default form-control" type="submit" value="Submit">Create Gallery</button>
-    </div>
-  </form>
+    <form action="/admin/gallery/new" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
+        <div class="form-group">
+            <input type="text" class="form-control" name="title" placeholder="Title" />
+        </div>
+        <div class="form-group">
+            <textarea placeholder="Description" class="form-control" rows="8" name="desc"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="file" name="file" />
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Create Gallery</button>
+        </div>
+    </form>
 </div>
 {{ template "footer" .}}

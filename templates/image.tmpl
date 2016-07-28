@@ -1,14 +1,13 @@
 {{ template "base" .}}
 <div class="comic_title">
-  <a href="/comic/{{.Comic}}/1">{{.Title}}</a>
+    <a href="/comic/{{.Comic}}/1">{{.Title}}</a>
 </div>
 {{ template "pagination" .}}
 <div class="comic">
-  <a target="_blank" href="images/{{.Image.Filename}}">
-    <div class="image">
-      <img src="images/{{.Image.Filename}}" alt="">
-    </div>
-  </a>
+    <a target="_blank" href="images/{{.Image.Filename}}">
+        <div class="image">
+            <img src="images/{{.Image.Filename}}" alt="">
+        </div>
+    </a>
 </div>
-{{ template "pagination" .}}
-{{ template "footer" .}}
+{{ template "pagination" .}} {{ template "footer" .}}

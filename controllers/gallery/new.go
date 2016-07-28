@@ -22,8 +22,10 @@ func NewController(c *gin.Context) {
 
 	vals := struct {
 		Meta m.Metadata
+		Csrf string
 	}{
 		Meta: metadata,
+		Csrf: c.MustGet("csrf_token").(string),
 	}
 
 	c.HTML(http.StatusOK, "gallerynew.tmpl", vals)

@@ -1,0 +1,15 @@
+{{ template "base" .}}
+<div class="admin">
+    <form action="/admin/login" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="text" class="form-control" name="name" placeholder="Username" />
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password" />
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Sign In</button>
+        </div>
+    </form>
+</div>
+{{ template "footer" .}}

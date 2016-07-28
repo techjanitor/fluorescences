@@ -13,22 +13,26 @@ import (
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		// try and get the jwt cookie from the request
+		// get the jwt cookie from the request
 		cookie, err := c.Request.Cookie(u.CookieName)
-		// parse jwt token if its there
-		if err != http.ErrNoCookie {
-			token, err := jwt.ParseWithClaims(cookie.Value, &u.TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
-				return u.ValidateToken(token)
-			})
-			// the client side should delete any saved JWT tokens on unauth error
-			if err != nil || !token.Valid {
-				// delete the cookie
-				http.SetCookie(c.Writer, u.DeleteCookie())
-				c.Error(err).SetMeta("middleware.Auth")
-				c.HTML(http.StatusUnauthorized, "error.tmpl", nil)
-				c.Abort()
-				return
-			}
+		if err != nil {
+			c.Error(err).SetMeta("middleware.Auth.Cookie")
+			c.HTML(http.StatusUnauthorized, "error.tmpl", nil)
+			c.Abort()
+			return
+		}
+
+		token, err := jwt.ParseWithClaims(cookie.Value, &u.TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+			return u.ValidateToken(token)
+		})
+		// the client side should delete any saved JWT tokens on unauth error
+		if err != nil || !token.Valid {
+			// delete the cookie
+			http.SetCookie(c.Writer, u.DeleteCookie())
+			c.Error(err).SetMeta("middleware.Auth")
+			c.HTML(http.StatusUnauthorized, "error.tmpl", nil)
+			c.Abort()
+			return
 		}
 
 		// set user data for controllers

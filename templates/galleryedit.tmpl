@@ -1,9 +1,10 @@
 {{ template "base" .}}
 <div class="admin">
     <form action="/admin/gallery/update" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
         <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
         <div class="form-group">
-            <input class="form-control" name="title" placeholder="Title" value="{{.Gallery.Title}}" />
+            <input type="text" class="form-control" name="title" placeholder="Title" value="{{.Gallery.Title}}" />
         </div>
         <div class="form-group">
             <textarea placeholder="Description" class="form-control" rows="5" name="desc">{{.Gallery.Desc}}</textarea>
@@ -29,6 +30,7 @@
                 </td>
                 <td style="width:3em;text-align:center;" align="center">
                     <form action="/admin/gallery/image/delete" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
                         <input class="form-control" type="hidden" name="gallery" value="{{$.Gallery.ID}}" />
                         <input class="form-control" type="hidden" name="image" value="{{$file.ID}}" />
                         <button class="button button-danger" type="submit" value="Submit">Delete</button>
@@ -41,6 +43,7 @@
 </div>
 <div class="admin">
     <form action="/admin/gallery/image/new" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
         <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
         <div class="form-group">
             <input type="file" name="file" />

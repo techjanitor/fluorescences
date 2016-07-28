@@ -28,9 +28,11 @@ func GalleryController(c *gin.Context) {
 	// values for template
 	vals := struct {
 		Meta      m.Metadata
+		Csrf      string
 		Galleries []m.GalleryType
 	}{
 		Meta:      metadata,
+		Csrf:      c.MustGet("csrf_token").(string),
 		Galleries: galleries,
 	}
 

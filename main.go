@@ -11,6 +11,7 @@ import (
 	"github.com/urfave/cli"
 
 	c "fluorescences/controllers"
+	m "fluorescences/middleware"
 	u "fluorescences/utils"
 
 	admin "fluorescences/controllers/admin"
@@ -26,9 +27,9 @@ func main() {
 	app := cli.NewApp()
 
 	app.Name = "Fluorescences"
-	app.Usage = "An art gallery"
+	app.Usage = "An art gallery blog"
 	app.Version = "RC1"
-	app.Copyright = "(c) 2016 Techjanitor"
+	app.Copyright = "(c) 2016 Tech Janitor"
 
 	app.Commands = []cli.Command{
 		{
@@ -59,7 +60,7 @@ func main() {
 			Name:  "start",
 			Usage: "start the server",
 			Action: func(c *cli.Context) error {
-				server()
+				start()
 				return nil
 			},
 		},
@@ -69,7 +70,8 @@ func main() {
 
 }
 
-func server() {
+// start will initialize the gin server
+func start() {
 
 	// load the site templates
 	t := template.Must(template.New("public").Funcs(u.TemplateFuncs).ParseGlob("templates/*.tmpl"))
@@ -88,8 +90,6 @@ func server() {
 
 	// routing group for public handlers
 	public := r.Group("/")
-	// generates our csrf cookie
-	public.Use(csrf.Cookie())
 
 	public.GET("/", blog.ViewController)
 	public.GET("/blog/:page", blog.ViewController)
@@ -99,16 +99,26 @@ func server() {
 
 	// routing group for admin handlers
 	authed := r.Group("/admin")
+	// add a CSRF cookie and session token to requests
+	authed.Use(csrf.Cookie())
 
 	authed.GET("/login", admin.LoginController)
+	authed.POST("/login", admin.AuthController)
+	authed.GET("/logout", admin.LogoutController)
+
+	// ensure the user is authenticated
+	authed.Use(m.Auth())
+
 	authed.GET("/panel", admin.GalleryController)
-
 	authed.GET("/blog", blog.NewController)
-	authed.POST("/blog/new", blog.PostController)
-	authed.POST("/blog/delete", blog.DeleteController)
-
 	authed.GET("/gallery", gallery.NewController)
 	authed.GET("/gallery/edit/:id", gallery.EditController)
+
+	// authenticates the CSRF session token
+	authed.Use(csrf.Verify())
+
+	authed.POST("/blog/new", blog.PostController)
+	authed.POST("/blog/delete", blog.DeleteController)
 	authed.POST("/gallery/new", gallery.PostController)
 	authed.POST("/gallery/delete", gallery.DeleteController)
 	authed.POST("/gallery/update", gallery.UpdateController)

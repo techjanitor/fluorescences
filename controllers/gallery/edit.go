@@ -40,9 +40,11 @@ func EditController(c *gin.Context) {
 
 	vals := struct {
 		Meta    m.Metadata
+		Csrf    string
 		Gallery m.GalleryType
 	}{
 		Meta:    metadata,
+		Csrf:    c.MustGet("csrf_token").(string),
 		Gallery: gallery,
 	}
 

@@ -22,10 +22,12 @@ func NewController(c *gin.Context) {
 
 	vals := struct {
 		Meta m.Metadata
+		Csrf string
 		New  bool
 		Edit bool
 	}{
 		Meta: metadata,
+		Csrf: c.MustGet("csrf_token").(string),
 		New:  true,
 		Edit: false,
 	}

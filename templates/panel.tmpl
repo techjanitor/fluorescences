@@ -24,6 +24,7 @@
                     </td>
                     <td style="width:3em;text-align:center;" align="center">
                         <form action="/admin/gallery/delete" method="post" enctype="multipart/form-data">
+                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
                             <input class="form-control" type="hidden" name="gallery" value="{{$gallery.ID}}" />
                             <button class="button button-danger" type="submit" value="Submit">Delete</button>
                         </form>

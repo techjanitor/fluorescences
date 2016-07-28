@@ -1,32 +1,28 @@
-{{ template "base" .}}
-{{if .All}}
-{{ template "pagination" .}}
+{{ template "base" .}} {{if .All}} {{ template "pagination" .}}
 <div class="gallery">
-  {{range $gallery := .Galleries}}
-  <a href="comic/{{$gallery.ID}}/1">
-    <div class="image_info">
-      {{$gallery.Title}}
-    </div>
-    <div class="image">
-      <img src="images/{{$gallery.Cover}}" alt="">
-    </div>
-  </a>
-  {{end}}
+    {{range $gallery := .Galleries}}
+    <a href="comic/{{$gallery.ID}}/1">
+        <div class="image_info">
+            {{$gallery.Title}}
+        </div>
+        <div class="image">
+            <img src="images/{{$gallery.Cover}}" alt="">
+        </div>
+    </a>
+    {{end}}
 </div>
 {{else}}
 <div class="comic_title">
-  {{.Gallery.Title}}
+    {{.Gallery.Title}}
 </div>
 {{ template "pagination" .}}
 <div class="gallery">
-  {{range $i, $file := .Gallery.Files}}
-  <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}">
-    <div class="image">
-      <img src="images/{{$file.Filename}}" alt="">
-    </div>
-  </a>
-  {{end}}
+    {{range $i, $file := .Gallery.Files}}
+    <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}">
+        <div class="image">
+            <img src="images/{{$file.Filename}}" alt="">
+        </div>
+    </a>
+    {{end}}
 </div>
-{{end}}
-{{ template "pagination" .}}
-{{ template "footer" .}}
+{{end}} {{ template "pagination" .}} {{ template "footer" .}}

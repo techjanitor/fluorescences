@@ -5,46 +5,28 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	m "fluorescences/models"
 	u "fluorescences/utils"
 )
 
-type loginForm struct {
-	Name     string `json:"name" binding:"required"`
-	Password string `json:"password" binding:"required"`
-}
-
-// LoginController handles the admin gallery page
+// LoginController is the login page
 func LoginController(c *gin.Context) {
-	var err error
-	var lf loginForm
 
-	err = c.Bind(&lf)
+	// holds our page metadata from settings
+	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("admin.LoginController.Bind")
+		c.Error(err).SetMeta("admin.LoginController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	// compare passwords
-	err = u.CheckPassword(lf.Password)
-	if err != nil {
-		c.Error(err).SetMeta("admin.LoginController.ComparePassword")
-		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
-		return
+	vals := struct {
+		Meta m.Metadata
+	}{
+		Meta: metadata,
 	}
 
-	// create jwt token
-	token, err := u.MakeToken()
-	if err != nil {
-		c.Error(err).SetMeta("admin.LoginController.MakeToken")
-		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
-		return
-	}
-
-	// set the jwt cookie
-	http.SetCookie(c.Writer, u.CreateCookie(token))
-
-	c.Redirect(http.StatusFound, "/admin/panel")
+	c.HTML(http.StatusOK, "login.tmpl", vals)
 
 	return
 

@@ -1,19 +1,18 @@
 {{ template "base" .}}
 <div class="admin">
-  {{if .New}}
-  <form action="/admin/blog/new" method="post">
-    <div class="form-group">
-      <input class="form-control" name="title" placeholder="Title" />
-    </div>
-    <div class="form-group">
-      <textarea placeholder="Content" class="form-control" rows="8" name="post"></textarea>
-    </div>
-    <div class="form-group">
-      <button class="button button-default form-control" type="submit" value="Submit">New Blog</button>
-    </div>
-  </form>
-  {{end}}
-  {{if .Edit}}
-  {{end}}
+    {{if .New}}
+    <form action="/admin/blog/new" method="post">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
+        <div class="form-group">
+            <input type="text" class="form-control" name="title" placeholder="Title" />
+        </div>
+        <div class="form-group">
+            <textarea placeholder="Content" class="form-control" rows="8" name="post"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">New Blog</button>
+        </div>
+    </form>
+    {{end}} {{if .Edit}} {{end}}
 </div>
 {{ template "footer" .}}
