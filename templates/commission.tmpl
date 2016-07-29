@@ -1,8 +1,15 @@
 {{template "base" .}}
-<div class="notification_subcontainer">
-    <div class="subcontainer_content">
-        {{if .Commission.Open}}<label class="label label-open">OPEN</label>{{else}}<label class="label label-closed">CLOSED</label>{{end}}
-        {{.Commission.ContentOut}}
+<div class="commission_container">
+    <div class="commission_status {{if .Commission.Open}}commission_open{{else}}commission_closed{{end}}">
+        {{if .Commission.Open}}OPEN{{else}}CLOSED{{end}}
+    </div>
+    <div class="commission_subcontainer">
+        <div class="commission_info">
+            Last updated: {{.Commission.HumanTime}}
+        </div>
+        <div class="commission_content">
+            {{.Commission.ContentOut}}
+        </div>
     </div>
 </div>
 {{template "footer" .}}

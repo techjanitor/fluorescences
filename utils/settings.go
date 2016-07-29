@@ -2,6 +2,7 @@ package utils
 
 import (
 	m "fluorescences/models"
+	"fmt"
 	"time"
 )
 
@@ -58,6 +59,8 @@ func InitData() (err error) {
 
 	// commit
 	tx.Commit()
+
+	fmt.Println("Data Generated")
 
 	return
 }

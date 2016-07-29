@@ -544,10 +544,17 @@ a {
 .comic,
 .admin,
 .comic_title,
-.blog_subcontainer {
+.blog_subcontainer,
+.commission_container {
   background-color: #f4f8ff;
   color: #242629;
   border: 1px solid #b9b9b9; }
+
+.commission_closed {
+  background-color: #ff5b5b; }
+
+.commission_open {
+  background-color: #74caa8; }
 
 .notification_subcontainer {
   background-color: #eff7ff;
@@ -614,12 +621,6 @@ a {
 
 .label-default {
   background-color: #eee; }
-
-.label-closed {
-  background-color: #ff5b5b; }
-
-.label-open {
-  background-color: #74caa8; }
 
 .main_content {
   order: 2;
@@ -994,6 +995,31 @@ label {
   @media screen and (min-width: 50em) {
     .label {
       font-size: 75%; } }
+
+.commission_container {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  margin-bottom: 1em; }
+  .commission_container .commission_status {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    padding: 0.5em 1em;
+    font-weight: bold; }
+  .commission_container .commission_subcontainer {
+    padding: 1em; }
+  .commission_container .commission_content {
+    margin-bottom: 1em; }
+  .commission_container .commission_info {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    font-size: 0.8em; }
+  .commission_container table {
+    margin: 0 auto;
+    max-width: 80%; }
 
 /* main css */
 @media screen and (min-width: 50em) {

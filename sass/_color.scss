@@ -18,11 +18,22 @@ a {
 .comic,
 .admin,
 .comic_title,
-.blog_subcontainer {
+.blog_subcontainer,
+.commission_container {
   background-color: #f4f8ff;
   color: #242629;
   border: 1px solid #b9b9b9;
 }
+
+
+.commission_closed {
+  background-color: #ff5b5b;
+}
+
+.commission_open {
+  background-color: #74caa8;
+}
+
 
 .notification_subcontainer {
   background-color: #eff7ff;
@@ -129,12 +140,4 @@ a {
 
 .label-default {
   background-color: #eee;
-}
-
-.label-closed {
-  background-color: #ff5b5b;
-}
-
-.label-open {
-  background-color: #74caa8;
 }

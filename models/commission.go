@@ -11,5 +11,5 @@ type CommissionType struct {
 	Content     string
 	ContentOut  template.HTML
 	HumanTime   string
-	UpdatedTime time.Time `storm:"index"`
+	UpdatedTime time.Time
 }

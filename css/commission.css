@@ -1,0 +1,12 @@
+.commission_container {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  margin-bottom: 1em; }
+  .commission_container .commission_info {
+    display: inline-block;
+    float: right;
+    width: 50%;
+    text-align: right;
+    font-size: 0.8em; }

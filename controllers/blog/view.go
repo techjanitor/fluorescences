@@ -1,14 +1,11 @@
 package controllers
 
 import (
-	"html/template"
 	"net/http"
 	"strconv"
 
 	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
-	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
 
 	m "fluorescences/models"
 	u "fluorescences/utils"
@@ -58,12 +55,8 @@ func ViewController(c *gin.Context) {
 	}
 
 	for _, post := range posts {
-		// make the post formatted with markdown
-		unsafe := blackfriday.MarkdownCommon([]byte(post.Content))
-		// sanitize the input
-		html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
-		// convert to template format
-		post.ContentOut = template.HTML(html)
+		// format post with markdown
+		post.ContentOut = u.Markdown(post.Content)
 		// convert time
 		post.HumanTime = post.StoredTime.Format("2006-01-02")
 	}
