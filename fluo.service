@@ -12,7 +12,7 @@ User=www-data
 RuntimeDirectory=fluorescences
 WorkingDirectory=/data/fluorescences/
 Environment=GIN_MODE=release
-ExecStart=/data/pram/bin/fluorescences
+ExecStart=/data/pram/bin/fluorescences start
 ExecReload=/bin/kill -USR2 $MAINPID
 Restart=always
 
