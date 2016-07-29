@@ -16,6 +16,7 @@ import (
 
 	admin "fluorescences/controllers/admin"
 	blog "fluorescences/controllers/blog"
+	com "fluorescences/controllers/commission"
 	gallery "fluorescences/controllers/gallery"
 	image "fluorescences/controllers/image"
 
@@ -36,6 +37,13 @@ func main() {
 			Name:  "init",
 			Usage: "initialize a component for the first time",
 			Subcommands: []cli.Command{
+				{
+					Name:  "data",
+					Usage: "initialize the boilerplate data",
+					Action: func(c *cli.Context) error {
+						return u.InitData()
+					},
+				},
 				{
 					Name:  "user",
 					Usage: "initialize the user",
@@ -96,6 +104,7 @@ func start() {
 	public.GET("/comics/:page", gallery.IndexController)
 	public.GET("/comic/:id/:page", gallery.ViewController)
 	public.GET("/image/:id/:page", image.ViewController)
+	public.GET("/commission", com.ViewController)
 
 	// routing group for admin handlers
 	authed := r.Group("/admin")
@@ -113,6 +122,7 @@ func start() {
 	authed.GET("/blog", blog.NewController)
 	authed.GET("/gallery", gallery.NewController)
 	authed.GET("/gallery/edit/:id", gallery.EditController)
+	authed.GET("/commission", com.EditController)
 
 	// authenticates the CSRF session token
 	authed.Use(csrf.Verify())
@@ -124,6 +134,7 @@ func start() {
 	authed.POST("/gallery/update", gallery.UpdateController)
 	authed.POST("/gallery/image/new", image.NewController)
 	authed.POST("/gallery/image/delete", image.DeleteController)
+	authed.POST("/commission/update", com.UpdateController)
 
 	s := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),

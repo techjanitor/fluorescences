@@ -545,12 +545,12 @@ a {
 .admin,
 .comic_title,
 .blog_subcontainer {
-  background-color: #f4fcff;
+  background-color: #f4f8ff;
   color: #242629;
   border: 1px solid #b9b9b9; }
 
 .notification_subcontainer {
-  background-color: #eafff3;
+  background-color: #eff7ff;
   color: #242629;
   border: 1px solid #b9b9b9; }
 
@@ -611,6 +611,15 @@ a {
   box-shadow: inset 0 1px 0 0 #f0bcbc; }
   .button-danger:hover {
     background-color: #e58f8f; }
+
+.label-default {
+  background-color: #eee; }
+
+.label-closed {
+  background-color: #ff5b5b; }
+
+.label-open {
+  background-color: #74caa8; }
 
 .main_content {
   order: 2;
@@ -964,6 +973,27 @@ button {
 .button-block {
   display: block;
   width: 100%; }
+
+/* label css */
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold; }
+
+.label {
+  display: inline;
+  padding: .1em .5em;
+  font-size: 50%;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 3px;
+  margin: 0; }
+  @media screen and (min-width: 50em) {
+    .label {
+      font-size: 75%; } }
 
 /* main css */
 @media screen and (min-width: 50em) {

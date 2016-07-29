@@ -52,7 +52,6 @@ func PostController(c *gin.Context) {
 	files = append(files, file)
 
 	gallery := m.GalleryType{
-		User:       "test",
 		StoredTime: time.Now(),
 		Title:      nf.Title,
 		Desc:       nf.Desc,

@@ -19,13 +19,13 @@ a {
 .admin,
 .comic_title,
 .blog_subcontainer {
-  background-color: #f4fcff;
+  background-color: #f4f8ff;
   color: #242629;
   border: 1px solid #b9b9b9;
 }
 
 .notification_subcontainer {
-  background-color: #eafff3;
+  background-color: #eff7ff;
   color: #242629;
   border: 1px solid #b9b9b9;
 }
@@ -125,4 +125,17 @@ a {
   &:hover {
     background-color: darken(#E89B9B, 3%);
   }
+}
+
+
+.label-default {
+  background-color: #eee;
+}
+
+.label-closed {
+  background-color: #ff5b5b;
+}
+
+.label-open {
+  background-color: #74caa8;
 }

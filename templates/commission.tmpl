@@ -1,0 +1,8 @@
+{{template "base" .}}
+<div class="notification_subcontainer">
+    <div class="subcontainer_content">
+        {{if .Commission.Open}}<label class="label label-open">OPEN</label>{{else}}<label class="label label-closed">CLOSED</label>{{end}}
+        {{.Commission.ContentOut}}
+    </div>
+</div>
+{{template "footer" .}}
