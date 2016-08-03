@@ -63,7 +63,7 @@ func ValidateToken(token *jwt.Token) ([]byte, error) {
 	// get the claims from the token
 	claims, ok := token.Claims.(*TokenClaims)
 	if !ok {
-		return nil, fmt.Errorf("Couldnt parse claims")
+		return nil, fmt.Errorf("Couldnt parse JWT claims")
 	}
 
 	// get the issuer from claims
@@ -71,7 +71,7 @@ func ValidateToken(token *jwt.Token) ([]byte, error) {
 
 	// check the issuer
 	if tokenIssuer != jwtIssuer {
-		return nil, fmt.Errorf("Incorrect issuer")
+		return nil, fmt.Errorf("Incorrect JWT issuer")
 	}
 
 	// get the stored HMAC secret

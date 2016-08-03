@@ -6,6 +6,25 @@ import (
 	"time"
 )
 
+const (
+	defaultCommission = `# Commission Info
+
+## This supports markdown!
+
+1. Rules
+1. Something
+2. Something Else
+
+- Need money
+- Send money
+
+### A table
+
+| Price        | Type           | Shading  |
+| ------------- |:-------------:| -----:|
+| $100      | sketch | nope |`
+)
+
 // GetMetadata will return a metadata struct from the settings bucket
 func GetMetadata() (meta m.Metadata, err error) {
 	err = Storm.Get("data", "metadata", &meta)
@@ -22,23 +41,8 @@ func InitData() (err error) {
 	defer tx.Rollback()
 
 	com := m.CommissionType{
-		Open: false,
-		Content: `# Commission Info
-
-## This supports markdown!
-
-1. Rules
-  1. Something
-  2. Something Else
-
-- Need money
-- Send money
-
-### A table
-
-| Price        | Type           | Shading  |
-| ------------- |:-------------:| -----:|
-| $100      | sketch | nope |`,
+		Open:        false,
+		Content:     defaultCommission,
 		UpdatedTime: time.Now(),
 	}
 

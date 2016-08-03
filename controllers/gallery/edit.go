@@ -13,7 +13,6 @@ import (
 // EditController edits gallery details
 func EditController(c *gin.Context) {
 	var err error
-	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -29,6 +28,8 @@ func EditController(c *gin.Context) {
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
+
+	var gallery m.GalleryType
 
 	// get the gallery from bolt
 	err = u.Storm.One("ID", comicID, &gallery)

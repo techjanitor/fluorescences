@@ -14,7 +14,6 @@ import (
 // ViewController handles the gallery pages
 func ViewController(c *gin.Context) {
 	var err error
-	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -28,8 +27,6 @@ func ViewController(c *gin.Context) {
 		currentPage = 1
 	}
 
-	// holds our pagination data
-	paginate := u.Paged{}
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
@@ -37,6 +34,8 @@ func ViewController(c *gin.Context) {
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
+
+	var gallery m.GalleryType
 
 	// get gallery info
 	err = u.Storm.One("ID", comicID, &gallery)
@@ -47,6 +46,9 @@ func ViewController(c *gin.Context) {
 	}
 
 	sort.Sort(gallery.Files)
+
+	// holds our pagination data
+	paginate := u.Paged{}
 
 	paginate.Path = "/comic/" + c.Param("id")
 	paginate.CurrentPage = currentPage

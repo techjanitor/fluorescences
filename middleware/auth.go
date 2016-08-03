@@ -29,7 +29,7 @@ func Auth() gin.HandlerFunc {
 		if err != nil || !token.Valid {
 			// delete the cookie
 			http.SetCookie(c.Writer, u.DeleteCookie())
-			c.Error(err).SetMeta("middleware.Auth")
+			c.Error(err).SetMeta("middleware.Auth.ParseWithClaims")
 			c.HTML(http.StatusUnauthorized, "error.tmpl", nil)
 			c.Abort()
 			return

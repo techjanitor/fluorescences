@@ -30,6 +30,15 @@ func GetUser() (user User, err error) {
 	return
 }
 
+// MustGetUsername will get the username and panic if it errors
+func MustGetUsername() string {
+	user, err := GetUser()
+	if err != nil {
+		panic(err)
+	}
+	return user.Name
+}
+
 // InitUser will set the user data
 func InitUser(name string) (err error) {
 	password, hash, err := RandomPassword()

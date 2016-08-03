@@ -76,7 +76,7 @@ func PostController(c *gin.Context) {
 	}
 
 	notification := m.BlogType{
-		User:          "test",
+		User:          u.MustGetUsername(),
 		Notificiation: true,
 		StoredTime:    time.Now(),
 		Title:         "New Gallery",

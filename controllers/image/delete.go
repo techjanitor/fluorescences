@@ -27,9 +27,18 @@ func DeleteController(c *gin.Context) {
 		return
 	}
 
+	// start transaction
+	tx, err := u.Storm.Begin(true)
+	if err != nil {
+		c.Error(err).SetMeta("image.DeleteController.Begin")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+	defer tx.Rollback()
+
 	var gallery m.GalleryType
 
-	err = u.Storm.One("ID", df.Gallery, &gallery)
+	err = tx.One("ID", df.Gallery, &gallery)
 	if err != nil {
 		c.Error(err).SetMeta("image.DeleteController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
@@ -47,12 +56,15 @@ func DeleteController(c *gin.Context) {
 		}
 	}
 
-	err = u.Storm.Save(&gallery)
+	err = tx.Save(&gallery)
 	if err != nil {
 		c.Error(err).SetMeta("image.DeleteController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
+
+	// commit
+	tx.Commit()
 
 	c.Redirect(http.StatusFound, c.Request.Referer())
 

@@ -15,5 +15,16 @@ type GalleryType struct {
 	StoredTime  time.Time `storm:"index"`
 	UpdatedTime time.Time `storm:"index"`
 	Files       Files
-	Keys        []KeyType
+	Keys        Keys
 }
+
+// GalleryCategory holds sorted galleries
+type GalleryCategory struct {
+	ID        int
+	Title     string `storm:"unique"`
+	Desc      string
+	Galleries Galleries
+}
+
+// Galleries is a slice of GalleryTypes
+type Galleries []*GalleryType

@@ -34,6 +34,7 @@ func NewController(c *gin.Context) {
 		return
 	}
 
+	// save the file to disk
 	file, err := u.SaveFile(upload, fileheader.Filename)
 	if err != nil {
 		c.Error(err).SetMeta("image.NewController.SaveFile")
@@ -41,6 +42,7 @@ func NewController(c *gin.Context) {
 		return
 	}
 
+	// add the image to the gallery file slice
 	err = AddImage(inf.ID, file)
 	if err != nil {
 		c.Error(err).SetMeta("image.NewController.AddImage")
@@ -57,9 +59,16 @@ func NewController(c *gin.Context) {
 // AddImage will add a blog post
 func AddImage(gid int, file m.FileType) (err error) {
 
+	// start transaction
+	tx, err := u.Storm.Begin(true)
+	if err != nil {
+		return
+	}
+	defer tx.Rollback()
+
 	var gallery m.GalleryType
 
-	err = u.Storm.One("ID", gid, &gallery)
+	err = tx.One("ID", gid, &gallery)
 	if err != nil {
 		return
 	}
@@ -78,10 +87,13 @@ func AddImage(gid int, file m.FileType) (err error) {
 
 	gallery.Files = append(gallery.Files, file)
 
-	err = u.Storm.Save(&gallery)
+	err = tx.Save(&gallery)
 	if err != nil {
 		return
 	}
+
+	// commit
+	tx.Commit()
 
 	return
 

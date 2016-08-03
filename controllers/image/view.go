@@ -14,7 +14,6 @@ import (
 // ViewController handles the comic image pages
 func ViewController(c *gin.Context) {
 	var err error
-	var gallery m.GalleryType
 
 	comicID, _ := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -28,9 +27,6 @@ func ViewController(c *gin.Context) {
 		currentPage = 1
 	}
 
-	// holds our pagination data
-	paginate := u.Paged{}
-
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
@@ -39,6 +35,7 @@ func ViewController(c *gin.Context) {
 		return
 	}
 
+	var gallery m.GalleryType
 	var image m.FileType
 	var title string
 
@@ -48,6 +45,9 @@ func ViewController(c *gin.Context) {
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
+
+	// holds our pagination data
+	paginate := u.Paged{}
 
 	paginate.Path = "/image/" + c.Param("id")
 	paginate.CurrentPage = currentPage

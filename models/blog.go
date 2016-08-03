@@ -14,5 +14,8 @@ type BlogType struct {
 	Content       string
 	ContentOut    template.HTML
 	HumanTime     string
-	StoredTime    time.Time
+	StoredTime    time.Time `storm:"index"`
 }
+
+// Blogs is a slice of BlogTypes
+type Blogs []*BlogType

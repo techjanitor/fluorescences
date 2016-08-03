@@ -16,7 +16,7 @@ func ViewController(c *gin.Context) {
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("image.ViewController.GetMetadata")
+		c.Error(err).SetMeta("commission.ViewController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -25,7 +25,7 @@ func ViewController(c *gin.Context) {
 
 	err = u.Storm.Get("data", "commission", &com)
 	if err != nil {
-		c.Error(err).SetMeta("image.ViewController.Get")
+		c.Error(err).SetMeta("commission.ViewController.Get")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

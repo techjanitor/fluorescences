@@ -28,7 +28,7 @@ func PostController(c *gin.Context) {
 	}
 
 	blog := m.BlogType{
-		User:       "test",
+		User:       u.MustGetUsername(),
 		StoredTime: time.Now(),
 		Title:      nf.Title,
 		Content:    nf.Post,

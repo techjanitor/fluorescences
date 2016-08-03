@@ -14,15 +14,11 @@ import (
 // ViewController handles the blog index page
 func ViewController(c *gin.Context) {
 	var err error
-	var posts []*m.BlogType
 
 	currentPage, _ := strconv.Atoi(c.Param("page"))
 	if currentPage < 1 {
 		currentPage = 1
 	}
-
-	// holds our pagination data
-	paginate := u.Paged{}
 
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
@@ -40,11 +36,16 @@ func ViewController(c *gin.Context) {
 		return
 	}
 
+	// holds our pagination data
+	paginate := u.Paged{}
+
 	paginate.Path = "/blog"
 	paginate.CurrentPage = currentPage
 	paginate.Total = total
 	paginate.PerPage = 10
 	paginate.Desc()
+
+	var posts m.Blogs
 
 	// get all the blog posts with a limit
 	err = u.Storm.All(&posts, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip), storm.Reverse())
@@ -65,7 +66,7 @@ func ViewController(c *gin.Context) {
 	vals := struct {
 		Meta  m.Metadata
 		Paged u.Paged
-		Posts []*m.BlogType
+		Posts m.Blogs
 	}{
 		Meta:  metadata,
 		Paged: paginate,

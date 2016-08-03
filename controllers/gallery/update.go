@@ -27,10 +27,19 @@ func UpdateController(c *gin.Context) {
 		return
 	}
 
+	// start transaction
+	tx, err := u.Storm.Begin(true)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.UpdateController.Begin")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+	defer tx.Rollback()
+
 	var gallery m.GalleryType
 
 	// get gallery details
-	err = u.Storm.One("ID", uf.ID, &gallery)
+	err = tx.One("ID", uf.ID, &gallery)
 	if err != nil {
 		c.Error(err).SetMeta("gallery.UpdateController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
@@ -41,12 +50,15 @@ func UpdateController(c *gin.Context) {
 	gallery.Desc = uf.Desc
 
 	// save with updated info
-	err = u.Storm.Save(&gallery)
+	err = tx.Save(&gallery)
 	if err != nil {
 		c.Error(err).SetMeta("gallery.UpdateController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
+
+	// commit
+	tx.Commit()
 
 	c.Redirect(http.StatusFound, "/comics/1")
 

@@ -15,7 +15,7 @@ func EditController(c *gin.Context) {
 	// holds our page metadata from settings
 	metadata, err := u.GetMetadata()
 	if err != nil {
-		c.Error(err).SetMeta("blog.EditController.GetMetadata")
+		c.Error(err).SetMeta("commission.EditController.GetMetadata")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}

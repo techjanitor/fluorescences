@@ -13,7 +13,7 @@ import (
 // GalleryController handles the admin gallery page
 func GalleryController(c *gin.Context) {
 	var err error
-	var galleries []m.GalleryType
+	var galleries m.Galleries
 
 	// holds out page metadata from settings
 	metadata, err := u.GetMetadata()
@@ -29,7 +29,7 @@ func GalleryController(c *gin.Context) {
 	vals := struct {
 		Meta      m.Metadata
 		Csrf      string
-		Galleries []m.GalleryType
+		Galleries m.Galleries
 	}{
 		Meta:      metadata,
 		Csrf:      c.MustGet("csrf_token").(string),
