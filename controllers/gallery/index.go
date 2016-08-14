@@ -15,6 +15,13 @@ import (
 func IndexController(c *gin.Context) {
 	var err error
 
+	categoryID, _ := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.Error(err).SetMeta("gallery.IndexController")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
 	currentPage, _ := strconv.Atoi(c.Param("page"))
 	if currentPage < 1 {
 		currentPage = 1
@@ -28,10 +35,11 @@ func IndexController(c *gin.Context) {
 		return
 	}
 
-	// get a count of the galleries for generating pagination
-	total, err := u.Storm.Count(&m.GalleryType{})
+	var total []m.GalleryType
+
+	err = u.Storm.Find("Category", categoryID, &total)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.IndexController.Count")
+		c.Error(err).SetMeta("gallery.IndexController.Find")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -41,32 +49,30 @@ func IndexController(c *gin.Context) {
 
 	paginate.Path = "/comics"
 	paginate.CurrentPage = currentPage
-	paginate.Total = total
+	paginate.Total = len(total)
 	paginate.PerPage = 6
 	paginate.Desc()
 
-	var galleries m.Galleries
+	var galleries []m.GalleryType
 
 	// get all the galleries with a limit
-	err = u.Storm.All(&galleries, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip), storm.Reverse())
+	err = u.Storm.Find("Category", categoryID, &galleries, storm.Limit(paginate.PerPage), storm.Skip(paginate.Skip), storm.Reverse())
 	if err != nil {
-		c.Error(err).SetMeta("gallery.IndexController.All")
+		c.Error(err).SetMeta("gallery.IndexController.Find")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	for _, gallery := range galleries {
-		// convert time
-		gallery.HumanTime = gallery.StoredTime.Format("2006-01-02")
+	for idx := range galleries {
 		// cover image is the first image in the slice
-		gallery.Cover = gallery.Files[0].Filename
+		galleries[idx].Cover = galleries[idx].Files[0].Filename
 	}
 
 	// values for template
 	vals := struct {
 		Meta      m.Metadata
 		Paged     u.Paged
-		Galleries m.Galleries
+		Galleries []m.GalleryType
 		All       bool
 	}{
 		Meta:      metadata,

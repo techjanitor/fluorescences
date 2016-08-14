@@ -45,7 +45,8 @@ func start() {
 
 	public.GET("/", blog.ViewController)
 	public.GET("/blog/:page", blog.ViewController)
-	public.GET("/comics/:page", gallery.IndexController)
+	public.GET("/categories", category.IndexController)
+	public.GET("/comics/:id/:page", gallery.IndexController)
 	public.GET("/comic/:id/:page", gallery.ViewController)
 	public.GET("/image/:id/:page", image.ViewController)
 	public.GET("/commission", com.ViewController)
@@ -63,25 +64,36 @@ func start() {
 	authed.Use(m.Auth())
 
 	authed.GET("/panel", admin.PanelController)
+
 	authed.GET("/blog", blog.NewController)
+	authed.GET("/blog/edit/:id", blog.EditController)
+
 	authed.GET("/category", category.NewController)
 	authed.GET("/category/edit/:id", category.EditController)
+
 	authed.GET("/gallery", gallery.NewController)
 	authed.GET("/gallery/edit/:id", gallery.EditController)
 
 	// authenticates the CSRF session token
 	authed.Use(csrf.Verify())
 
+	authed.POST("/settings/update", admin.UpdateController)
+
 	authed.POST("/blog/new", blog.PostController)
 	authed.POST("/blog/delete", blog.DeleteController)
+	authed.POST("/blog/update", blog.UpdateController)
+
 	authed.POST("/category/new", category.PostController)
 	authed.POST("/category/delete", category.DeleteController)
 	authed.POST("/category/update", category.UpdateController)
+
 	authed.POST("/gallery/new", gallery.PostController)
 	authed.POST("/gallery/delete", gallery.DeleteController)
 	authed.POST("/gallery/update", gallery.UpdateController)
+	authed.POST("/gallery/private", gallery.PrivateController)
 	authed.POST("/gallery/image/new", image.NewController)
 	authed.POST("/gallery/image/delete", image.DeleteController)
+
 	authed.POST("/commission/update", com.UpdateController)
 
 	s := &http.Server{

@@ -61,7 +61,21 @@
                         {{$gallery.Images}}
                     </td>
                     <td style="width:3em;text-align:center;" align="center">
-                        {{$gallery.Private}}
+                        {{if $gallery.Private}}
+                        <form action="/admin/gallery/private" method="post" enctype="multipart/form-data">
+                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                            <input class="form-control" type="hidden" name="id" value="{{$gallery.ID}}" />
+                            <input class="form-control" type="hidden" name="private" value="false" />
+                            <button class="button button-danger" type="submit" value="Submit">Private</button>
+                        </form>
+                        {{else}}
+                        <form action="/admin/gallery/private" method="post" enctype="multipart/form-data">
+                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                            <input class="form-control" type="hidden" name="id" value="{{$gallery.ID}}" />
+                            <input class="form-control" type="hidden" name="private" value="true" />
+                            <button class="button button-primary" type="submit" value="Submit">Public</button>
+                        </form>
+                        {{end}}
                     </td>
                     <td style="width:3em;text-align:center;" align="center">
                         <a class="button button-primary" href="/admin/gallery/edit/{{$gallery.ID}}">Edit</a>
@@ -80,6 +94,38 @@
     </div>
 </div>
 <div class="admin">
+    <div class="admin_title">Blogs <a class="button button-primary" style="float:right;" href="/admin/blog">New</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left;">Title</th>
+                <th style="text-align:center;">Edit</th>
+                <th style="text-align:center;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $blog := .Blogs}}
+            <tr>
+                <td style="width:auto;text-align:left;">
+                    {{$blog.Title}}
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <a class="button button-primary" href="/admin/blog/edit/{{$blog.ID}}">Edit</a>
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <form action="/admin/blog/delete" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                        <input class="form-control" type="hidden" name="id" value="{{$blog.ID}}" />
+                        <button class="button button-danger" type="submit" value="Submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+<div class="admin">
     <div class="admin_title">Commission Information
     </div>
     <form action="/admin/commission/update" method="post" enctype="multipart/form-data">
@@ -90,6 +136,22 @@
         <div class="form-group">
             <input type="radio" class="form-control" name="open" value="false" {{if .Commission.Open}}{{else}}checked{{end}}>Closed
             <input type="radio" class="form-control" name="open" value="true" {{if .Commission.Open}}checked{{end}}>Open
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Update</button>
+        </div>
+    </form>
+</div>
+<div class="admin">
+    <div class="admin_title">Site Settings
+    </div>
+    <form action="/admin/settings/update" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
+        <div class="form-group">
+            <input type="text" class="form-control" name="title" value="{{.Meta.Title}}" placeholder="Title" />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="desc" value="{{.Meta.Desc}}" placeholder="Description" />
         </div>
         <div class="form-group">
             <button class="button button-default form-control" type="submit" value="Submit">Update</button>

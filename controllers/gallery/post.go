@@ -96,7 +96,7 @@ func PostController(c *gin.Context) {
 	// commit
 	tx.Commit()
 
-	c.Redirect(http.StatusFound, "/comics/1")
+	c.Redirect(http.StatusFound, fmt.Sprintf("/comics/%d/1", nf.Category))
 
 	return
 

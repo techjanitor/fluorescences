@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,20 +10,19 @@ import (
 )
 
 type updateForm struct {
-	ID       int    `form:"id" binding:"required"`
-	Category int    `form:"category" binding:"required"`
-	Title    string `form:"title" binding:"required"`
-	Desc     string `form:"desc" binding:"required"`
+	ID    int    `form:"id" binding:"required"`
+	Title string `form:"title" binding:"required"`
+	Post  string `form:"post" binding:"required"`
 }
 
-// UpdateController updates gallery information
+// UpdateController updates a blog post
 func UpdateController(c *gin.Context) {
 	var err error
 	var uf updateForm
 
 	err = c.Bind(&uf)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.Bind")
+		c.Error(err).SetMeta("blog.UpdateController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -32,30 +30,29 @@ func UpdateController(c *gin.Context) {
 	// start transaction
 	tx, err := u.Storm.Begin(true)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.Begin")
+		c.Error(err).SetMeta("blog.UpdateController.Begin")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 	defer tx.Rollback()
 
-	var gallery m.GalleryType
+	var blog m.BlogType
 
-	// get gallery details
-	err = tx.One("ID", uf.ID, &gallery)
+	// get category details
+	err = tx.One("ID", uf.ID, &blog)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.One")
+		c.Error(err).SetMeta("blog.UpdateController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	gallery.Title = uf.Title
-	gallery.Desc = uf.Desc
-	gallery.Category = uf.Category
+	blog.Title = uf.Title
+	blog.Content = uf.Post
 
 	// save with updated info
-	err = tx.Save(&gallery)
+	err = tx.Save(&blog)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.Save")
+		c.Error(err).SetMeta("blog.UpdateController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -63,7 +60,7 @@ func UpdateController(c *gin.Context) {
 	// commit
 	tx.Commit()
 
-	c.Redirect(http.StatusFound, fmt.Sprintf("/comics/%d/1", uf.Category))
+	c.Redirect(http.StatusFound, "/")
 
 	return
 

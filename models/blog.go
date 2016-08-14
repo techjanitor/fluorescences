@@ -18,4 +18,4 @@ type BlogType struct {
 }
 
 // Blogs is a slice of BlogTypes
-type Blogs []*BlogType
+type Blogs []BlogType

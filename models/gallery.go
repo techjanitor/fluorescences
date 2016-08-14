@@ -8,12 +8,13 @@ import (
 type CategoryType struct {
 	ID        int
 	Galleries int
+	Cover     string
 	Title     string `storm:"unique"`
 	Desc      string
 }
 
 // Categories is a slice of Categorys
-type Categories []*CategoryType
+type Categories []CategoryType
 
 // GalleryType holds a gallery
 type GalleryType struct {
@@ -32,4 +33,4 @@ type GalleryType struct {
 }
 
 // Galleries is a slice of GalleryTypes
-type Galleries []*GalleryType
+type Galleries []GalleryType

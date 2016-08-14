@@ -55,11 +55,11 @@ func ViewController(c *gin.Context) {
 		return
 	}
 
-	for _, post := range posts {
+	for idx, post := range posts {
 		// format post with markdown
-		post.ContentOut = u.Markdown(post.Content)
+		posts[idx].ContentOut = u.Markdown(post.Content)
 		// convert time
-		post.HumanTime = post.StoredTime.Format("2006-01-02")
+		posts[idx].HumanTime = post.StoredTime.Format("2006-01-02")
 	}
 
 	// values for template

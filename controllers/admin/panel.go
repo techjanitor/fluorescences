@@ -27,8 +27,8 @@ func PanelController(c *gin.Context) {
 	u.Storm.All(&galleries, storm.Reverse())
 
 	// get a count of the gallery images
-	for _, gallery := range galleries {
-		gallery.Images = len(gallery.Files)
+	for idx, gallery := range galleries {
+		galleries[idx].Images = len(gallery.Files)
 	}
 
 	var com m.CommissionType
@@ -46,7 +46,7 @@ func PanelController(c *gin.Context) {
 	}
 
 	// get a total of galleries in the category
-	for _, cat := range cats {
+	for idx, cat := range cats {
 		var galleries []m.GalleryType
 
 		err = u.Storm.Find("Category", cat.ID, &galleries)
@@ -56,7 +56,25 @@ func PanelController(c *gin.Context) {
 			return
 		}
 
-		cat.Galleries = len(galleries)
+		cats[idx].Galleries = len(galleries)
+	}
+
+	var allblogs, blogs m.Blogs
+
+	// get all the blogs
+	err = u.Storm.All(&allblogs)
+	if err != nil {
+		c.Error(err).SetMeta("admin.PanelController.All")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	// we just want regular blogs in the list
+	for _, blog := range allblogs {
+		if blog.Notificiation {
+			continue
+		}
+		blogs = append(blogs, blog)
 	}
 
 	// values for template
@@ -66,12 +84,14 @@ func PanelController(c *gin.Context) {
 		Categories m.Categories
 		Galleries  m.Galleries
 		Commission m.CommissionType
+		Blogs      m.Blogs
 	}{
 		Meta:       metadata,
 		Csrf:       c.MustGet("csrf_token").(string),
 		Categories: cats,
 		Galleries:  galleries,
 		Commission: com,
+		Blogs:      blogs,
 	}
 
 	c.HTML(http.StatusOK, "panel.tmpl", vals)

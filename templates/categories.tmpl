@@ -1,0 +1,14 @@
+{{ template "base" .}}
+<div class="gallery">
+    {{range $category := .Categories}} {{if $category.Cover}}
+    <a href="/comics/{{$category.ID}}/1">
+        <div class="image_info">
+            {{$category.Title}}
+        </div>
+        <div class="image">
+            <img src="/images/{{$category.Cover}}" alt="">
+        </div>
+    </a>
+    {{end}} {{end}}
+</div>
+{{ template "footer" .}}
