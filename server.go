@@ -14,6 +14,7 @@ import (
 
 	admin "fluorescences/controllers/admin"
 	blog "fluorescences/controllers/blog"
+	category "fluorescences/controllers/category"
 	com "fluorescences/controllers/commission"
 	gallery "fluorescences/controllers/gallery"
 	image "fluorescences/controllers/image"
@@ -61,17 +62,21 @@ func start() {
 	// ensure the user is authenticated
 	authed.Use(m.Auth())
 
-	authed.GET("/panel", admin.GalleryController)
+	authed.GET("/panel", admin.PanelController)
 	authed.GET("/blog", blog.NewController)
+	authed.GET("/category", category.NewController)
+	authed.GET("/category/edit/:id", category.EditController)
 	authed.GET("/gallery", gallery.NewController)
 	authed.GET("/gallery/edit/:id", gallery.EditController)
-	authed.GET("/commission", com.EditController)
 
 	// authenticates the CSRF session token
 	authed.Use(csrf.Verify())
 
 	authed.POST("/blog/new", blog.PostController)
 	authed.POST("/blog/delete", blog.DeleteController)
+	authed.POST("/category/new", category.PostController)
+	authed.POST("/category/delete", category.DeleteController)
+	authed.POST("/category/update", category.UpdateController)
 	authed.POST("/gallery/new", gallery.PostController)
 	authed.POST("/gallery/delete", gallery.DeleteController)
 	authed.POST("/gallery/update", gallery.UpdateController)

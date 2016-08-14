@@ -61,6 +61,29 @@ func InitData() (err error) {
 		return
 	}
 
+	cat := m.CategoryType{
+		Title: "Default",
+		Desc:  "The default category",
+	}
+
+	// save gallery category
+	err = tx.Save(&cat)
+	if err != nil {
+		return
+	}
+
+	blog := m.BlogType{
+		User:       MustGetUsername(),
+		StoredTime: time.Now(),
+		Title:      "First post",
+		Content:    "Welcome to your new art blog!",
+	}
+
+	err = tx.Save(&blog)
+	if err != nil {
+		return
+	}
+
 	// commit
 	tx.Commit()
 

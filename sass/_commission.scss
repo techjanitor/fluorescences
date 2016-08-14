@@ -1,5 +1,3 @@
-
-
 .commission_container {
   width: 100%;
   border-radius: 4px;
@@ -7,33 +5,31 @@
   text-align: left;
   margin-bottom: 1em;
 
-
   & .commission_status {
     display: inline-block;
     width: 100%;
     text-align: left;
-padding: 0.5em 1em;
-font-weight: bold;
+    padding: 0.5em 1em;
+    font-weight: bold;
   }
 
-& .commission_subcontainer {
-  padding: 1em;
-}
+  & .commission_subcontainer {
+    padding: 1em;
+  }
 
-& .commission_content {
-  margin-bottom: 1em;
-}
+  & .commission_content {
+    margin-bottom: 1em;
+  }
 
-& .commission_info {
-  display: inline-block;
-  width: 100%;
-  text-align: left;
-  font-size: 0.8em;
-}
+  & .commission_info {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    font-size: 0.8em;
+  }
 
-& table {
-   margin: 0 auto;
-  max-width: 80%;
-}
-
+  & table {
+    margin: 0 auto;
+    max-width: 80%;
+  }
 }

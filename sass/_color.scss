@@ -1,5 +1,5 @@
 body {
-  background-color: #e2e3ea;
+  background-color: #fdfdfd;
   color: #e7e7f3;
 }
 
@@ -19,12 +19,13 @@ a {
 .admin,
 .comic_title,
 .blog_subcontainer,
-.commission_container {
-  background-color: #f4f8ff;
+.commission_container,
+.menu_container {
+  background-color: #fff;
   color: #242629;
-  border: 1px solid #b9b9b9;
+  border: 1px solid #d2d2d2;
+      box-shadow: inset 1px 0 0 0 #e8e8e8;
 }
-
 
 .commission_closed {
   background-color: #ff5b5b;
@@ -34,11 +35,11 @@ a {
   background-color: #74caa8;
 }
 
-
 .notification_subcontainer {
-  background-color: #eff7ff;
+  background-color: #f3f7ff;
   color: #242629;
-  border: 1px solid #b9b9b9;
+  border: 1px solid #daddff;
+        box-shadow: inset 1px 0 0 0 #e7eaff;
 }
 
 .subcontainer_author,
@@ -47,10 +48,6 @@ a {
 }
 
 .menu_container {
-  background-color: #edeef3;
-  color: #242629;
-  border: 1px solid #b9b9b9;
-
   &.admin_panel {
     background-color: #ffeaea;
   }

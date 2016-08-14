@@ -1,10 +1,51 @@
 {{ template "base" .}}
 <div class="admin">
     <div class="gallery_info">
+        <div class="admin_title"> Categories <a class="button button-primary" style="float:right;" href="/admin/category">New</a>
+        </div>
         <table>
             <thead>
                 <tr>
                     <th style="text-align:left;">Title</th>
+                    <th style="text-align:center;">Galleries</th>
+                    <th style="text-align:center;">Edit</th>
+                    <th style="text-align:center;">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $category := .Categories}}
+                <tr>
+                    <td style="width:auto;text-align:left;">
+                        {{$category.Title}}
+                    </td>
+                    <td style="width:3em;text-align:center;">
+                        {{$category.Galleries}}
+                    </td>
+                    <td style="width:3em;text-align:center;" align="center">
+                        <a class="button button-primary" href="/admin/category/edit/{{$category.ID}}">Edit</a>
+                    </td>
+                    <td style="width:3em;text-align:center;" align="center">
+                        <form action="/admin/category/delete" method="post" enctype="multipart/form-data">
+                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                            <input class="form-control" type="hidden" name="category" value="{{$category.ID}}" />
+                            <button class="button button-danger" type="submit" value="Submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="admin">
+    <div class="gallery_info">
+        <div class="admin_title"> Galleries <a class="button button-primary" style="float:right;" href="/admin/gallery">New</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Title</th>
+                    <th style="text-align:center;">Images</th>
                     <th style="text-align:center;">Private</th>
                     <th style="text-align:center;">Edit</th>
                     <th style="text-align:center;">Delete</th>
@@ -15,6 +56,9 @@
                 <tr>
                     <td style="width:auto;text-align:left;">
                         {{$gallery.Title}}
+                    </td>
+                    <td style="width:3em;text-align:center;" align="center">
+                        {{$gallery.Images}}
                     </td>
                     <td style="width:3em;text-align:center;" align="center">
                         {{$gallery.Private}}
@@ -34,5 +78,22 @@
             </tbody>
         </table>
     </div>
+</div>
+<div class="admin">
+    <div class="admin_title">Commission Information
+    </div>
+    <form action="/admin/commission/update" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
+        <div class="form-group">
+            <textarea placeholder="Commission description" class="form-control" rows="8" name="content">{{.Commission.Content}}</textarea>
+        </div>
+        <div class="form-group">
+            <input type="radio" class="form-control" name="open" value="false" {{if .Commission.Open}}{{else}}checked{{end}}>Closed
+            <input type="radio" class="form-control" name="open" value="true" {{if .Commission.Open}}checked{{end}}>Open
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Update</button>
+        </div>
+    </form>
 </div>
 {{ template "footer" .}}

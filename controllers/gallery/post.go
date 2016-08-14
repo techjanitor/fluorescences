@@ -12,8 +12,9 @@ import (
 )
 
 type newForm struct {
-	Title string `form:"title" binding:"required"`
-	Desc  string `form:"desc" binding:"required"`
+	Category int    `form:"category" binding:"required"`
+	Title    string `form:"title" binding:"required"`
+	Desc     string `form:"desc" binding:"required"`
 }
 
 // PostController posts new galleries
@@ -52,6 +53,7 @@ func PostController(c *gin.Context) {
 	files = append(files, file)
 
 	gallery := m.GalleryType{
+		Category:   nf.Category,
 		StoredTime: time.Now(),
 		Title:      nf.Title,
 		Desc:       nf.Desc,

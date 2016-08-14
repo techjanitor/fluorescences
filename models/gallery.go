@@ -4,9 +4,22 @@ import (
 	"time"
 )
 
+// CategoryType holds category info
+type CategoryType struct {
+	ID        int
+	Galleries int
+	Title     string `storm:"unique"`
+	Desc      string
+}
+
+// Categories is a slice of Categorys
+type Categories []*CategoryType
+
 // GalleryType holds a gallery
 type GalleryType struct {
 	ID          int
+	Images      int
+	Category    int    `storm:"index"`
 	Title       string `storm:"unique"`
 	Cover       string
 	Desc        string
@@ -16,14 +29,6 @@ type GalleryType struct {
 	UpdatedTime time.Time `storm:"index"`
 	Files       Files
 	Keys        Keys
-}
-
-// GalleryCategory holds sorted galleries
-type GalleryCategory struct {
-	ID        int
-	Title     string `storm:"unique"`
-	Desc      string
-	Galleries Galleries
 }
 
 // Galleries is a slice of GalleryTypes

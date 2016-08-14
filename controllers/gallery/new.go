@@ -20,12 +20,24 @@ func NewController(c *gin.Context) {
 		return
 	}
 
+	var cats m.Categories
+
+	// get all the categories
+	err = u.Storm.All(&cats)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.NewController.All")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
 	vals := struct {
-		Meta m.Metadata
-		Csrf string
+		Meta       m.Metadata
+		Csrf       string
+		Categories m.Categories
 	}{
-		Meta: metadata,
-		Csrf: c.MustGet("csrf_token").(string),
+		Meta:       metadata,
+		Csrf:       c.MustGet("csrf_token").(string),
+		Categories: cats,
 	}
 
 	c.HTML(http.StatusOK, "gallerynew.tmpl", vals)

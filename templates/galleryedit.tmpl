@@ -10,7 +10,26 @@
             <textarea placeholder="Description" class="form-control" rows="5" name="desc">{{.Gallery.Desc}}</textarea>
         </div>
         <div class="form-group">
+          <select name="category">
+                {{range $category := .Categories}}
+            <option value="{{$category.ID}}" {{if eq $category.ID $.Gallery.Category}}selected{{end}}>{{$category.Title}}</option>
+            {{end}}
+          </select>
+        </div>
+        <div class="form-group">
             <button class="button button-default form-control" type="submit" value="Submit">Update</button>
+        </div>
+    </form>
+</div>
+<div class="admin">
+    <form action="/admin/gallery/image/new" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
+        <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
+        <div class="form-group">
+            <input type="file" name="file" />
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Add Image</button>
         </div>
     </form>
 </div>
@@ -40,17 +59,5 @@
             {{end}}
         </tbody>
     </table>
-</div>
-<div class="admin">
-    <form action="/admin/gallery/image/new" method="post" enctype="multipart/form-data">
-        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
-        <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
-        <div class="form-group">
-            <input type="file" name="file" />
-        </div>
-        <div class="form-group">
-            <button class="button button-default form-control" type="submit" value="Submit">Add Image</button>
-        </div>
-    </form>
 </div>
 {{ template "footer" .}}

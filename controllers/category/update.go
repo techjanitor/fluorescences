@@ -10,20 +10,19 @@ import (
 )
 
 type updateForm struct {
-	ID       int    `form:"id" binding:"required"`
-	Category int    `form:"category" binding:"required"`
-	Title    string `form:"title" binding:"required"`
-	Desc     string `form:"desc" binding:"required"`
+	ID    int    `form:"id" binding:"required"`
+	Title string `form:"title" binding:"required"`
+	Desc  string `form:"desc" binding:"required"`
 }
 
-// UpdateController updates gallery information
+// UpdateController updates category information
 func UpdateController(c *gin.Context) {
 	var err error
 	var uf updateForm
 
 	err = c.Bind(&uf)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.Bind")
+		c.Error(err).SetMeta("category.UpdateController.Bind")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -31,30 +30,29 @@ func UpdateController(c *gin.Context) {
 	// start transaction
 	tx, err := u.Storm.Begin(true)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.Begin")
+		c.Error(err).SetMeta("category.UpdateController.Begin")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 	defer tx.Rollback()
 
-	var gallery m.GalleryType
+	var category m.CategoryType
 
-	// get gallery details
-	err = tx.One("ID", uf.ID, &gallery)
+	// get category details
+	err = tx.One("ID", uf.ID, &category)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.One")
+		c.Error(err).SetMeta("category.UpdateController.One")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	gallery.Title = uf.Title
-	gallery.Desc = uf.Desc
-	gallery.Category = uf.Category
+	category.Title = uf.Title
+	category.Desc = uf.Desc
 
 	// save with updated info
-	err = tx.Save(&gallery)
+	err = tx.Save(&category)
 	if err != nil {
-		c.Error(err).SetMeta("gallery.UpdateController.Save")
+		c.Error(err).SetMeta("category.UpdateController.Save")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
@@ -62,7 +60,7 @@ func UpdateController(c *gin.Context) {
 	// commit
 	tx.Commit()
 
-	c.Redirect(http.StatusFound, "/comics/1")
+	c.Redirect(http.StatusFound, "/admin/panel")
 
 	return
 

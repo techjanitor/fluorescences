@@ -9,6 +9,13 @@
             <textarea placeholder="Description" class="form-control" rows="8" name="desc"></textarea>
         </div>
         <div class="form-group">
+          <select name="category">
+                {{range $category := .Categories}}
+            <option value="{{$category.ID}}">{{$category.Title}}</option>
+            {{end}}
+          </select>
+        </div>
+        <div class="form-group">
             <input type="file" name="file" />
         </div>
         <div class="form-group">
