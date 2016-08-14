@@ -18,6 +18,7 @@ import (
 	com "fluorescences/controllers/commission"
 	gallery "fluorescences/controllers/gallery"
 	image "fluorescences/controllers/image"
+	keys "fluorescences/controllers/keys"
 
 	"github.com/eirka/eirka-libs/csrf"
 )
@@ -47,8 +48,9 @@ func start() {
 	public.GET("/blog/:page", blog.ViewController)
 	public.GET("/categories", category.IndexController)
 	public.GET("/comics/:id/:page", gallery.IndexController)
-	public.GET("/comic/:id/:page", gallery.ViewController)
-	public.GET("/image/:id/:page", image.ViewController)
+	public.GET("/comic/:id/:page", m.Private(), gallery.ViewController)
+	public.GET("/image/:id/:page", m.Private(), image.ViewController)
+	public.GET("/gallery/key/:id", keys.InputController)
 	public.GET("/commission", com.ViewController)
 
 	// routing group for admin handlers
@@ -93,6 +95,8 @@ func start() {
 	authed.POST("/gallery/private", gallery.PrivateController)
 	authed.POST("/gallery/image/new", image.NewController)
 	authed.POST("/gallery/image/delete", image.DeleteController)
+	authed.POST("/gallery/key/new", keys.NewController)
+	authed.POST("/gallery/key/delete", keys.DeleteController)
 
 	authed.POST("/commission/update", com.UpdateController)
 

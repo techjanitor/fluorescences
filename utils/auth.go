@@ -102,13 +102,13 @@ func InitSecret() (err error) {
 
 // RandomPassword will generate a random password for password resets
 func RandomPassword() (password string, hash []byte, err error) {
-	password = generateRandomPassword(20)
+	password = GenerateRandomPassword(20)
 	hash, err = HashPassword(password)
 	return
 }
 
-// will generate a password with random characters
-func generateRandomPassword(n int) string {
+// GenerateRandomPassword will generate a password with random characters
+func GenerateRandomPassword(n int) string {
 	// random source
 	src := mrand.NewSource(time.Now().UnixNano())
 

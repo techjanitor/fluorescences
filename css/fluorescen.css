@@ -872,6 +872,9 @@ a {
   margin-bottom: 1em; }
   .admin .nav_link {
     display: inline-block; }
+  .admin .gallery_key {
+    font-size: 1.8em;
+    padding: 1em; }
 
 .admin_title {
   padding: 0 0 1em 0; }

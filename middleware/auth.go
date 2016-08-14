@@ -17,7 +17,7 @@ func Auth() gin.HandlerFunc {
 		cookie, err := c.Request.Cookie(u.CookieName)
 		if err != nil {
 			c.Error(err).SetMeta("middleware.Auth.Cookie")
-			c.HTML(http.StatusUnauthorized, "error.tmpl", nil)
+			c.Redirect(http.StatusFound, "/admin/login")
 			c.Abort()
 			return
 		}
@@ -30,7 +30,7 @@ func Auth() gin.HandlerFunc {
 			// delete the cookie
 			http.SetCookie(c.Writer, u.DeleteCookie())
 			c.Error(err).SetMeta("middleware.Auth.ParseWithClaims")
-			c.HTML(http.StatusUnauthorized, "error.tmpl", nil)
+			c.Redirect(http.StatusFound, "/admin/login")
 			c.Abort()
 			return
 		}

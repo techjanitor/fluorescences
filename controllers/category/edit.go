@@ -14,7 +14,7 @@ import (
 func EditController(c *gin.Context) {
 	var err error
 
-	comicID, _ := strconv.Atoi(c.Param("id"))
+	comicID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.Error(err).SetMeta("category.EditController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)

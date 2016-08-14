@@ -15,7 +15,7 @@ import (
 func IndexController(c *gin.Context) {
 	var err error
 
-	categoryID, _ := strconv.Atoi(c.Param("id"))
+	categoryID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.Error(err).SetMeta("gallery.IndexController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)

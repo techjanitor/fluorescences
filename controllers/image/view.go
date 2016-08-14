@@ -15,14 +15,14 @@ import (
 func ViewController(c *gin.Context) {
 	var err error
 
-	comicID, _ := strconv.Atoi(c.Param("id"))
+	comicID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.Error(err).SetMeta("image.ViewController")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
 		return
 	}
 
-	currentPage, _ := strconv.Atoi(c.Param("page"))
+	currentPage, err := strconv.Atoi(c.Param("page"))
 	if currentPage < 1 {
 		currentPage = 1
 	}

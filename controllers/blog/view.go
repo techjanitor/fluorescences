@@ -15,7 +15,7 @@ import (
 func ViewController(c *gin.Context) {
 	var err error
 
-	currentPage, _ := strconv.Atoi(c.Param("page"))
+	currentPage, err := strconv.Atoi(c.Param("page"))
 	if currentPage < 1 {
 		currentPage = 1
 	}
