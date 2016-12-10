@@ -19,6 +19,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "tenant",
+			Value: "fluorescences",
 			Usage: "the name of the tenant",
 		},
 		cli.StringFlag{
