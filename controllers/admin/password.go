@@ -48,9 +48,19 @@ func PasswordController(c *gin.Context) {
 		return
 	}
 
-	err = u.Storm.Set("auth", "user", &u.User{
-		Password: hash,
-	})
+	var user u.User
+
+	err = u.Storm.Get("auth", "user", &user)
+	if err != nil {
+		c.Error(err).SetMeta("admin.PasswordController.HashPassword")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	// set user password
+	user.Password = hash
+
+	err = u.Storm.Set("auth", "user", &user)
 	if err != nil {
 		c.Error(err).SetMeta("admin.PasswordController.Set")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
