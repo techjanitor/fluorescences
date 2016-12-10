@@ -110,6 +110,8 @@ func start() {
 
 	authed.POST("/commission/update", com.UpdateController)
 
+	authed.POST("/password/update", admin.PasswordController)
+
 	s := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),
 		Handler: r,

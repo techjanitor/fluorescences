@@ -95,14 +95,15 @@ a {
 }
 
 .button-default {
-  border: 1px solid darken(#edeef3, 10%);
-  background-color: darken(#edeef3, 5%);
-  box-shadow: inset 0 1px 0 0 lighten(#edeef3, 8%);
+  border: 1px solid lighten(#4e4e4e, 10%);
+  background-color: lighten(#4e4e4e, 5%);
+  box-shadow: inset 0 1px 0 0 darken(#4e4e4e, 15%);
+color: #d6d6d6;
 
   &:hover,
   &:focus,
   &.focus {
-    background-color: darken(#edeef3, 6%);
+    background-color: lighten(#4e4e4e, 15%);
   }
 }
 
