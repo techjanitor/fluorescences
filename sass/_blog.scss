@@ -2,6 +2,12 @@
   order: 2;
   height: auto;
   padding: 0.5em;
+
+  @media #{$screenSmall} {
+  width: 100%;
+  margin-top: 1em;
+  }
+
 }
 
 .notification_subcontainer,

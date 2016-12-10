@@ -4,4 +4,5 @@ package models
 type Metadata struct {
 	Title string
 	Desc  string
+	Links Links
 }

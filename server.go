@@ -19,6 +19,7 @@ import (
 	gallery "fluorescences/controllers/gallery"
 	image "fluorescences/controllers/image"
 	keys "fluorescences/controllers/keys"
+	link "fluorescences/controllers/link"
 
 	"github.com/eirka/eirka-libs/csrf"
 )
@@ -70,6 +71,8 @@ func start() {
 	authed.GET("/blog", blog.NewController)
 	authed.GET("/blog/edit/:id", blog.EditController)
 
+	authed.GET("/link/edit/:id", link.EditController)
+
 	authed.GET("/category", category.NewController)
 	authed.GET("/category/edit/:id", category.EditController)
 
@@ -86,6 +89,10 @@ func start() {
 	authed.POST("/blog/new", blog.PostController)
 	authed.POST("/blog/delete", blog.DeleteController)
 	authed.POST("/blog/update", blog.UpdateController)
+
+	authed.POST("/link/new", link.NewController)
+	authed.POST("/link/delete", link.DeleteController)
+	authed.POST("/link/update", link.UpdateController)
 
 	authed.POST("/category/new", category.PostController)
 	authed.POST("/category/delete", category.DeleteController)

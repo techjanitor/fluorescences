@@ -5,14 +5,19 @@
         <a class="menu_item" href="/categories">Gallery</a>
         <a class="menu_item" href="/commission">Commission</a>
     </div>
-    <div class="menu_logo">
-      <a href="/"><img src="/css/logo.png" /></a>
+    {{ if .Meta.Links}}
+    <div class="menu_container">
+        {{range $link := .Meta.Links}}
+        <a class="menu_item" target="_blank" href="{{$link.Address}}">{{$link.Title}}</a> {{end}}
     </div>
-</div>
-
-<div class="menu_container admin_panel">
-    <a class="menu_item" href="/admin/login">Login</a>
-    <a class="menu_item" href="/admin/panel">Gallery Admin</a>
-    <a class="menu_item" href="/admin/logout">Log Out</a>
+    {{end}}
+    <div class="menu_container admin_panel">
+        <a class="menu_item" href="/admin/login">Login</a>
+        <a class="menu_item" href="/admin/panel">Gallery Admin</a>
+        <a class="menu_item" href="/admin/logout">Log Out</a>
+    </div>
+    <div class="menu_logo">
+        <a href="/"><img src="/css/logo.png" /></a>
+    </div>
 </div>
 {{end}}

@@ -13,6 +13,10 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+
+  @media #{$screenSmall} {
+    flex-direction: row;
+  }
 }
 
 .main_menu {
@@ -20,11 +24,8 @@
   height: auto;
   padding: 0.5em;
   display: flex;
-  flex-direction: column;
+    flex-direction: column;
 
-  @media #{$screenSmall} {
-    flex-direction: row;
-  }
 }
 
 .menu_container {
@@ -32,15 +33,23 @@
   text-align: center;
   overflow: hidden;
   border-radius: 4px;
+margin-bottom: 5px;
 
   @media #{$screenSmall} {
-    order: 1;
+margin-bottom: 1em;
   }
+
+
+
 
   & .menu_item {
     display: inline-block;
     text-decoration: none;
-    padding: 1em;
+    padding: 0.8em;
+
+    @media #{$screenSmall} {
+      display: block;
+    }
 
     &:hover,
     &:focus,
@@ -56,10 +65,7 @@
   overflow: hidden;
   padding: 0.5em;
 
-  @media #{$screenSmall} {
-    margin-left: auto;
-    order: 2;
-  }
+
 
   & img {
     display: inline-block;

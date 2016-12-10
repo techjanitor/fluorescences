@@ -24,7 +24,12 @@ func PanelController(c *gin.Context) {
 
 	var galleries m.Galleries
 
-	u.Storm.All(&galleries, storm.Reverse())
+	err = u.Storm.All(&galleries, storm.Reverse())
+	if err != nil {
+		c.Error(err).SetMeta("admin.PanelController.All")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
 
 	// get a count of the gallery images
 	for idx, gallery := range galleries {
@@ -77,6 +82,16 @@ func PanelController(c *gin.Context) {
 		blogs = append(blogs, blog)
 	}
 
+	var links m.Links
+
+	// get all the links
+	err = u.Storm.All(&links)
+	if err != nil {
+		c.Error(err).SetMeta("admin.PanelController.All")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
 	// values for template
 	vals := struct {
 		Meta       m.Metadata
@@ -85,6 +100,7 @@ func PanelController(c *gin.Context) {
 		Galleries  m.Galleries
 		Commission m.CommissionType
 		Blogs      m.Blogs
+		Links      m.Links
 	}{
 		Meta:       metadata,
 		Csrf:       c.MustGet("csrf_token").(string),
@@ -92,6 +108,7 @@ func PanelController(c *gin.Context) {
 		Galleries:  galleries,
 		Commission: com,
 		Blogs:      blogs,
+		Links:      links,
 	}
 
 	c.HTML(http.StatusOK, "panel.tmpl", vals)

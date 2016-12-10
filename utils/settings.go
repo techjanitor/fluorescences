@@ -27,7 +27,18 @@ const (
 
 // GetMetadata will return a metadata struct from the settings bucket
 func GetMetadata() (meta m.Metadata, err error) {
+
 	err = Storm.Get("data", "metadata", &meta)
+	if err != nil {
+		return
+	}
+
+	// get all the links
+	err = Storm.All(&meta.Links)
+	if err != nil {
+		return
+	}
+
 	return
 }
 
@@ -80,6 +91,17 @@ func InitData() (err error) {
 	}
 
 	err = tx.Save(&blog)
+	if err != nil {
+		return
+	}
+
+	link := m.LinkType{
+		Title:   "Tumblr",
+		Address: "http://tumblr.com",
+	}
+
+	// save gallery
+	err = tx.Save(&link)
 	if err != nil {
 		return
 	}
