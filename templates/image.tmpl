@@ -1,7 +1,7 @@
 {{ template "base" .}}
 <div class="comic_title">
-    {{if .Key}}
-    <a href="/comic/{{.Comic}}/1?key={{.Key}}">{{.Title}}</a> {{else}}
+    {{if .Paged.Key}}
+    <a href="/comic/{{.Comic}}/1?key={{.Paged.Key}}">{{.Title}}</a> {{else}}
     <a href="/comic/{{.Comic}}/1">{{.Title}}</a> {{end}}
 </div>
 {{ template "pagination" .}}
@@ -12,7 +12,9 @@
         </div>
     </a>
 </div>
+{{ if .Image.Desc}}
 <div class="comic_desc">
     {{.Image.DescOut}}
 </div>
+{{end}}
 {{ template "pagination" .}} {{ template "footer" .}}

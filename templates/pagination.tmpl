@@ -2,8 +2,8 @@
 <div class="pagination">
     <div class="left">
         {{ if .Paged.Min}}
-        <span class="nav_link disabled">Prev</span> {{else}} {{ if .Key}}
-        <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Prev}}?key={{.Key}}">Prev</a> {{else}}
+        <span class="nav_link disabled">Prev</span> {{else}} {{ if .Paged.Key}}
+        <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Prev}}?key={{.Paged.Key}}">Prev</a> {{else}}
         <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Prev}}">Prev</a> {{end}} {{end}}
     </div>
     <div class="center">
@@ -11,8 +11,8 @@
     </div>
     <div class="right">
         {{ if .Paged.Max}}
-        <span class="nav_link disabled">Next</span> {{else}} {{ if .Key}}
-        <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Next}}?key={{.Key}}">Next</a> {{else}}
+        <span class="nav_link disabled">Next</span> {{else}} {{ if .Paged.Key}}
+        <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Next}}?key={{.Paged.Key}}">Next</a> {{else}}
         <a class="nav_link" href="{{.Paged.Path}}/{{.Paged.Next}}">Next</a> {{end}} {{end}}
     </div>
 </div>

@@ -84,6 +84,20 @@
   padding: 1em;
 }
 
+.comic_desc {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  font-size: 1em;
+  margin-bottom: 1em;
+  padding: 1em;
+
+  & p {
+    white-space: pre-line;
+  }
+}
+
 .comic {
   width: 100%;
   border-radius: 4px;

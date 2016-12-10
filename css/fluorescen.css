@@ -531,7 +531,7 @@ table th {
   padding: 0.3em 0.5em; }
 
 body {
-  background-color: #fdfdfd;
+  background-color: #333335;
   color: #e7e7f3; }
 
 a {
@@ -543,14 +543,14 @@ a {
 .gallery,
 .comic,
 .admin,
-.comic_title,
+.comic_desc,
 .blog_subcontainer,
 .commission_container,
 .menu_container {
-  background-color: #fff;
+  background-color: #e0e0e0;
   color: #242629;
-  border: 1px solid #d2d2d2;
-  box-shadow: inset 1px 0 0 0 #e8e8e8; }
+  border: 1px solid #232323;
+  box-shadow: inset 1px 0 0 0 #5f5f65; }
 
 .commission_closed {
   background-color: #ff5b5b; }
@@ -558,11 +558,12 @@ a {
 .commission_open {
   background-color: #74caa8; }
 
+.comic_title,
 .notification_subcontainer {
-  background-color: #f3f7ff;
-  color: #242629;
-  border: 1px solid #daddff;
-  box-shadow: inset 1px 0 0 0 #e7eaff; }
+  background-color: #4c4c4c;
+  color: #bfc2c7;
+  border: 1px solid #232323;
+  box-shadow: inset 1px 0 0 0 #5f5f65; }
 
 .subcontainer_author,
 .subcontainer_info {
@@ -816,6 +817,17 @@ a {
   font-size: 1.2em;
   margin-bottom: 1em;
   padding: 1em; }
+
+.comic_desc {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  font-size: 1em;
+  margin-bottom: 1em;
+  padding: 1em; }
+  .comic_desc p {
+    white-space: pre-line; }
 
 .comic {
   width: 100%;

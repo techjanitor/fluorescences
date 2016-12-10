@@ -26,8 +26,8 @@
 </div>
 {{ template "pagination" .}}
 <div class="gallery">
-    {{range $i, $file := .Gallery.Files}} {{if $.Key}}
-    <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}?key={{$.Key}}">
+    {{range $i, $file := .Gallery.Files}} {{if $.Paged.Key}}
+    <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}?key={{$.Paged.Key}}">
       {{else}}
     <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}">
       {{end}}

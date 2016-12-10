@@ -52,6 +52,7 @@ func ViewController(c *gin.Context) {
 	// holds our pagination data
 	paginate := u.Paged{}
 
+	paginate.Key = privateKey
 	paginate.Path = "/image/" + c.Param("id")
 	paginate.CurrentPage = currentPage
 	paginate.Total = len(gallery.Files)
@@ -77,14 +78,12 @@ func ViewController(c *gin.Context) {
 		Meta  m.Metadata
 		Paged u.Paged
 		Comic int
-		Key   string
 		Title string
 		Image m.FileType
 	}{
 		Meta:  metadata,
 		Paged: paginate,
 		Comic: comicID,
-		Key:   privateKey,
 		Title: title,
 		Image: image,
 	}

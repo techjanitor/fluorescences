@@ -16,6 +16,7 @@ type Paged struct {
 	Min         bool   `json:"page_min"`
 	Max         bool   `json:"page_max"`
 	Path        string `json:"page_path"`
+	Key         string `json:"key"`
 }
 
 // Asc calculates the pagination numbers as ascending
