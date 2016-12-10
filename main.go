@@ -16,15 +16,29 @@ func main() {
 	app.Version = "RC1"
 	app.Copyright = "(c) 2016 Tech Janitor"
 
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "tenant",
+			Usage: "the name of the tenant",
+		},
+		cli.StringFlag{
+			Name:  "address",
+			Value: "localhost",
+			Usage: "address to bind to",
+		},
+		cli.IntFlag{
+			Name:  "port",
+			Value: 5000,
+			Usage: "port to run on",
+		},
+	}
+
 	app.Commands = []cli.Command{
 		{
 			Name:  "start",
 			Usage: "start the server",
 			Action: func(c *cli.Context) error {
-				name := c.Args().Get(0)
-				address := c.Args().Get(1)
-				port := c.Args().Get(2)
-				start(name, address, port)
+				start(c.String("tenant"), c.String("address"), c.Int("port"))
 				return nil
 			},
 		},
@@ -36,41 +50,27 @@ func main() {
 					Name:  "data",
 					Usage: "initialize the boilerplate data",
 					Action: func(c *cli.Context) error {
-						name := c.Args().Get(0)
-						if name == "" {
-							return cli.NewExitError("tenant name required", 1)
-						}
-
-						return u.InitData(name)
+						return u.InitData(c.String("tenant"))
 					},
 				},
 				{
 					Name:  "user",
 					Usage: "initialize a user",
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:  "username",
+							Usage: "the name of the user",
+						},
+					},
 					Action: func(c *cli.Context) error {
-						name := c.Args().Get(0)
-						if name == "" {
-							return cli.NewExitError("tenant name required", 1)
-						}
-
-						user := c.Args().Get(1)
-						if user == "" {
-							return cli.NewExitError("username required", 1)
-						}
-
-						return u.InitUser(name, user)
+						return u.InitUser(c.String("tenant"), c.String("username"))
 					},
 				},
 				{
 					Name:  "secret",
 					Usage: "initialize the HMAC secret",
 					Action: func(c *cli.Context) error {
-						name := c.Args().Get(0)
-						if name == "" {
-							return cli.NewExitError("tenant name required", 1)
-						}
-
-						return u.InitSecret(name)
+						return u.InitSecret(c.String("tenant"))
 					},
 				},
 			},

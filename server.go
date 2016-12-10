@@ -26,7 +26,7 @@ import (
 )
 
 // start will initialize the gin server
-func start(name, address, port string) {
+func start(name, address string, port int) {
 
 	// init store
 	u.Initialize(name)
@@ -125,7 +125,7 @@ func start(name, address, port string) {
 	authed.POST("/password/update", admin.PasswordController)
 
 	s := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", address, port),
+		Addr:    fmt.Sprintf("%s:%d", address, port),
 		Handler: r,
 	}
 
