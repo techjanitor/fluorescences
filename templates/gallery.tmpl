@@ -15,8 +15,7 @@
         <div class="image">
             <img src="images/{{$gallery.Cover}}" alt="">
         </div>
-    </a>
-    {{end}}
+    </a> {{end}}
 </div>
 {{else}}
 <div class="comic_title">
@@ -27,12 +26,14 @@
 </div>
 {{ template "pagination" .}}
 <div class="gallery">
-    {{range $i, $file := .Gallery.Files}}
+    {{range $i, $file := .Gallery.Files}} {{if $.Key}}
+    <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}?key={{$.Key}}">
+      {{else}}
     <a href="image/{{$.Gallery.ID}}/{{add $.Paged.Skip $i 1}}">
+      {{end}}
         <div class="image">
-            <img src="images/{{$file.Filename}}" alt="">
+            <img src="images/{{$file.Filename}}" alt="{{$file.Desc}}">
         </div>
-    </a>
-    {{end}}
+    </a> {{end}}
 </div>
 {{end}} {{ template "pagination" .}} {{ template "footer" .}}

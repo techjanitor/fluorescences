@@ -16,6 +16,9 @@ import (
 func ViewController(c *gin.Context) {
 	var err error
 
+	// the key for private galleries
+	privateKey := c.Query("key")
+
 	comicID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.Error(err).SetMeta("gallery.ViewController")
@@ -70,11 +73,13 @@ func ViewController(c *gin.Context) {
 		Meta    m.Metadata
 		Paged   u.Paged
 		Gallery m.GalleryType
+		Key     string
 		All     bool
 	}{
 		Meta:    metadata,
 		Paged:   paginate,
 		Gallery: gallery,
+		Key:     privateKey,
 		All:     false,
 	}
 

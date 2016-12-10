@@ -1,12 +1,14 @@
 {{ template "base" .}}
 <div class="comic_title">
-    <a href="/comic/{{.Comic}}/1">{{.Title}}</a>
+    {{if .Key}}
+    <a href="/comic/{{.Comic}}/1?key={{.Key}}">{{.Title}}</a> {{else}}
+    <a href="/comic/{{.Comic}}/1">{{.Title}}</a> {{end}}
 </div>
 {{ template "pagination" .}}
 <div class="comic">
     <a target="_blank" href="images/{{.Image.Filename}}">
         <div class="image">
-            <img src="images/{{.Image.Filename}}" alt="">
+            <img src="images/{{.Image.Filename}}" alt="{{.Image.Desc}}">
         </div>
     </a>
 </div>
