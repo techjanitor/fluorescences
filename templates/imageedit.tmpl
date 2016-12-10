@@ -1,0 +1,15 @@
+{{ template "base" .}}
+<div class="admin">
+    <form action="/admin/gallery/image/update" method="post" enctype="multipart/form-data">
+        <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
+        <input class="form-control" type="hidden" name="gallery" value="{{.Gallery.ID}}" />
+        <input class="form-control" type="hidden" name="image" value="{{.Image.ID}}" />
+        <div class="form-group">
+            <textarea placeholder="Description" class="form-control" rows="5" name="desc">{{.Image.Desc}}</textarea>
+        </div>
+        <div class="form-group">
+            <button class="button button-default form-control" type="submit" value="Submit">Update</button>
+        </div>
+    </form>
+</div>
+{{ template "footer" .}}

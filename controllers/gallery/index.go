@@ -53,6 +53,19 @@ func IndexController(c *gin.Context) {
 	paginate.PerPage = 6
 	paginate.Desc()
 
+	var category m.CategoryType
+
+	// get category info
+	err = u.Storm.One("ID", categoryID, &category)
+	if err != nil {
+		c.Error(err).SetMeta("gallery.IndexController")
+		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
+		return
+	}
+
+	// convert the gallery desc
+	category.DescOut = u.Markdown(category.Desc)
+
 	var galleries []m.GalleryType
 
 	// get all the galleries with a limit
@@ -72,11 +85,13 @@ func IndexController(c *gin.Context) {
 	vals := struct {
 		Meta      m.Metadata
 		Paged     u.Paged
+		Category  m.CategoryType
 		Galleries []m.GalleryType
 		All       bool
 	}{
 		Meta:      metadata,
 		Paged:     paginate,
+		Category:  category,
 		Galleries: galleries,
 		All:       true,
 	}

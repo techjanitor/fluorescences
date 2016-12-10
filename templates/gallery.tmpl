@@ -1,4 +1,11 @@
-{{ template "base" .}} {{if .All}} {{ template "pagination" .}}
+{{ template "base" .}} {{if .All}}
+<div class="comic_title">
+    {{.Category.Title}}
+</div>
+<div class="comic_desc">
+    {{.Category.DescOut}}
+</div>
+{{ template "pagination" .}}
 <div class="gallery">
     {{range $gallery := .Galleries}}
     <a href="comic/{{$gallery.ID}}/1">
@@ -14,6 +21,9 @@
 {{else}}
 <div class="comic_title">
     {{.Gallery.Title}}
+</div>
+<div class="comic_desc">
+    {{.Gallery.DescOut}}
 </div>
 {{ template "pagination" .}}
 <div class="gallery">

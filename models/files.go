@@ -1,9 +1,13 @@
 package models
 
+import "html/template"
+
 // FileType holds an image file
 type FileType struct {
 	ID       int
 	Filename string
+	Desc     string
+	DescOut  template.HTML
 }
 
 // Files is a slice of FileTypes

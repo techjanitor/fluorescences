@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"sort"
 	"strconv"
@@ -37,6 +38,8 @@ func ViewController(c *gin.Context) {
 
 	var gallery m.GalleryType
 
+	fmt.Println(gallery.DescOut)
+
 	// get gallery info
 	err = u.Storm.One("ID", comicID, &gallery)
 	if err != nil {
@@ -58,6 +61,9 @@ func ViewController(c *gin.Context) {
 
 	// page through the files slice
 	gallery.Files = pageFiles(gallery.Files, paginate.PerPage, paginate.Skip)
+
+	// convert the gallery desc
+	gallery.DescOut = u.Markdown(gallery.Desc)
 
 	// values for template
 	vals := struct {

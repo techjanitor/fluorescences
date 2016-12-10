@@ -64,6 +64,9 @@ func ViewController(c *gin.Context) {
 		}
 	}
 
+	// convert the gallery desc
+	image.DescOut = u.Markdown(image.Desc)
+
 	title = gallery.Title
 
 	// values for template

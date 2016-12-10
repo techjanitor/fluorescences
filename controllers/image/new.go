@@ -11,7 +11,8 @@ import (
 )
 
 type newForm struct {
-	ID int `form:"id" binding:"required"`
+	ID   int    `form:"id" binding:"required"`
+	Desc string `form:"desc"`
 }
 
 // NewController add an image to a gallery
@@ -43,7 +44,7 @@ func NewController(c *gin.Context) {
 	}
 
 	// add the image to the gallery file slice
-	err = AddImage(inf.ID, file)
+	err = AddImage(inf.ID, inf.Desc, file)
 	if err != nil {
 		c.Error(err).SetMeta("image.NewController.AddImage")
 		c.HTML(http.StatusInternalServerError, "error.tmpl", nil)
@@ -57,7 +58,7 @@ func NewController(c *gin.Context) {
 }
 
 // AddImage will add a blog post
-func AddImage(gid int, file m.FileType) (err error) {
+func AddImage(gid int, desc string, file m.FileType) (err error) {
 
 	// start transaction
 	tx, err := u.Storm.Begin(true)
@@ -84,6 +85,9 @@ func AddImage(gid int, file m.FileType) (err error) {
 		lid := gallery.Files[len(gallery.Files)-1]
 		file.ID = lid.ID + 1
 	}
+
+	// copy the image desc
+	file.Desc = desc
 
 	gallery.Files = append(gallery.Files, file)
 

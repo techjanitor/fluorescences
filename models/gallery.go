@@ -1,6 +1,7 @@
 package models
 
 import (
+	"html/template"
 	"time"
 )
 
@@ -11,6 +12,7 @@ type CategoryType struct {
 	Cover     string
 	Title     string `storm:"unique"`
 	Desc      string
+	DescOut   template.HTML
 }
 
 // Categories is a slice of Categorys
@@ -24,6 +26,7 @@ type GalleryType struct {
 	Title       string `storm:"unique"`
 	Cover       string
 	Desc        string
+	DescOut     template.HTML
 	Private     bool `storm:"index"`
 	HumanTime   string
 	StoredTime  time.Time `storm:"index"`

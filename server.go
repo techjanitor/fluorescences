@@ -76,6 +76,8 @@ func start() {
 	authed.GET("/gallery", gallery.NewController)
 	authed.GET("/gallery/edit/:id", gallery.EditController)
 
+	authed.GET("/image/edit/:gallery/:image", image.EditController)
+
 	// authenticates the CSRF session token
 	authed.Use(csrf.Verify())
 
@@ -95,6 +97,7 @@ func start() {
 	authed.POST("/gallery/private", gallery.PrivateController)
 	authed.POST("/gallery/image/new", image.NewController)
 	authed.POST("/gallery/image/delete", image.DeleteController)
+	authed.POST("/gallery/image/update", image.UpdateController)
 	authed.POST("/gallery/key/new", keys.NewController)
 	authed.POST("/gallery/key/delete", keys.DeleteController)
 
