@@ -37,6 +37,10 @@ func main() {
 					Usage: "initialize the boilerplate data",
 					Action: func(c *cli.Context) error {
 						name := c.Args().Get(0)
+						if name == "" {
+							return cli.NewExitError("tenant name required", 1)
+						}
+
 						return u.InitData(name)
 					},
 				},
@@ -45,10 +49,15 @@ func main() {
 					Usage: "initialize a user",
 					Action: func(c *cli.Context) error {
 						name := c.Args().Get(0)
+						if name == "" {
+							return cli.NewExitError("tenant name required", 1)
+						}
+
 						user := c.Args().Get(1)
 						if user == "" {
 							return cli.NewExitError("username required", 1)
 						}
+
 						return u.InitUser(name, user)
 					},
 				},
@@ -57,6 +66,10 @@ func main() {
 					Usage: "initialize the HMAC secret",
 					Action: func(c *cli.Context) error {
 						name := c.Args().Get(0)
+						if name == "" {
+							return cli.NewExitError("tenant name required", 1)
+						}
+
 						return u.InitSecret(name)
 					},
 				},
