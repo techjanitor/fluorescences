@@ -43,7 +43,10 @@ func GetMetadata() (meta m.Metadata, err error) {
 }
 
 // InitData will set the initial data
-func InitData() (err error) {
+func InitData(name string) (err error) {
+
+	// init the store
+	Initialize(name)
 
 	tx, err := Storm.Begin(true)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/facebookgo/grace/gracehttp"
+	"github.com/facebookgo/pidfile"
 	"github.com/gin-gonic/gin"
 
 	c "fluorescences/controllers"
@@ -25,7 +26,18 @@ import (
 )
 
 // start will initialize the gin server
-func start() {
+func start(name, address, port string) {
+
+	// init store
+	u.Initialize(name)
+
+	// create pid file
+	pidfile.SetPidfilePath(fmt.Sprintf("/run/fluorescences/%s.pid", name))
+
+	err := pidfile.Write()
+	if err != nil {
+		panic("Could not write pid file")
+	}
 
 	// load the site templates
 	t := template.Must(template.New("public").Funcs(u.TemplateFuncs).ParseGlob("templates/*.tmpl"))
@@ -113,7 +125,7 @@ func start() {
 	authed.POST("/password/update", admin.PasswordController)
 
 	s := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", "0.0.0.0", 5000),
+		Addr:    fmt.Sprintf("%s:%s", address, port),
 		Handler: r,
 	}
 

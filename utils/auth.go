@@ -40,17 +40,21 @@ func MustGetUsername() string {
 }
 
 // InitUser will set the user data
-func InitUser(name string) (err error) {
+func InitUser(name, user string) (err error) {
+
+	// init the store
+	Initialize(name)
+
 	password, hash, err := RandomPassword()
 	if err != nil {
 		return
 	}
 
 	// Print out the info to the console
-	fmt.Printf("User Generated\nName: %s\nPassword: %s\n", name, password)
+	fmt.Printf("User Generated\nName: %s\nPassword: %s\n", user, password)
 
 	return Storm.Set("auth", "user", &User{
-		Name:     name,
+		Name:     user,
 		Password: hash,
 	})
 }
@@ -95,7 +99,11 @@ func GetSecret() (secret []byte, err error) {
 }
 
 // InitSecret will set the JWT key
-func InitSecret() (err error) {
+func InitSecret(name string) (err error) {
+
+	// init the store
+	Initialize(name)
+
 	fmt.Println("Secret Generated")
 	return Storm.Set("auth", "secret", NewSecret())
 }

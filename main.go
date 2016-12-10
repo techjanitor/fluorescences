@@ -21,7 +21,10 @@ func main() {
 			Name:  "start",
 			Usage: "start the server",
 			Action: func(c *cli.Context) error {
-				start()
+				name := c.Args().Get(0)
+				address := c.Args().Get(1)
+				port := c.Args().Get(2)
+				start(name, address, port)
 				return nil
 			},
 		},
@@ -33,25 +36,28 @@ func main() {
 					Name:  "data",
 					Usage: "initialize the boilerplate data",
 					Action: func(c *cli.Context) error {
-						return u.InitData()
+						name := c.Args().Get(0)
+						return u.InitData(name)
 					},
 				},
 				{
 					Name:  "user",
 					Usage: "initialize a user",
 					Action: func(c *cli.Context) error {
-						name := c.Args().First()
-						if name == "" {
+						name := c.Args().Get(0)
+						user := c.Args().Get(1)
+						if user == "" {
 							return cli.NewExitError("username required", 1)
 						}
-						return u.InitUser(name)
+						return u.InitUser(name, user)
 					},
 				},
 				{
 					Name:  "secret",
 					Usage: "initialize the HMAC secret",
 					Action: func(c *cli.Context) error {
-						return u.InitSecret()
+						name := c.Args().Get(0)
+						return u.InitSecret(name)
 					},
 				},
 			},

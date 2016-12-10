@@ -6,7 +6,7 @@ PrivateTmp=yes
 ProtectHome=yes
 ProtectSystem=full
 
-#PIDFile=/run/fluorescences/fluorescences.pid
+PIDFile=/run/fluorescences/fluorescences.pid
 
 User=www-data
 RuntimeDirectory=fluorescences
