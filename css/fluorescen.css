@@ -749,9 +749,9 @@ a {
   padding: 0.5em; }
   .menu_logo img {
     display: inline-block;
-    max-width: 10em;
+    max-width: 100%;
     height: auto;
-    max-height: 2em; }
+    max-height: 10em; }
 
 .gallery {
   width: 100%;
