@@ -60,6 +60,7 @@ func main() {
 					Flags: []cli.Flag{
 						cli.StringFlag{
 							Name:  "username",
+							Value: "anonymous",
 							Usage: "the name of the user",
 						},
 					},
