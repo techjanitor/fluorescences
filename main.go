@@ -39,7 +39,7 @@ func main() {
 			Name:  "start",
 			Usage: "start the server",
 			Action: func(c *cli.Context) error {
-				start(c.String("tenant"), c.String("address"), c.Int("port"))
+				start(c.GlobalString("tenant"), c.GlobalString("address"), c.GlobalInt("port"))
 				return nil
 			},
 		},
@@ -51,7 +51,7 @@ func main() {
 					Name:  "data",
 					Usage: "initialize the boilerplate data",
 					Action: func(c *cli.Context) error {
-						return u.InitData(c.String("tenant"))
+						return u.InitData(c.GlobalString("tenant"))
 					},
 				},
 				{
@@ -64,14 +64,14 @@ func main() {
 						},
 					},
 					Action: func(c *cli.Context) error {
-						return u.InitUser(c.String("tenant"), c.String("username"))
+						return u.InitUser(c.GlobalString("tenant"), c.String("username"))
 					},
 				},
 				{
 					Name:  "secret",
 					Usage: "initialize the HMAC secret",
 					Action: func(c *cli.Context) error {
-						return u.InitSecret(c.String("tenant"))
+						return u.InitSecret(c.GlobalString("tenant"))
 					},
 				},
 			},
