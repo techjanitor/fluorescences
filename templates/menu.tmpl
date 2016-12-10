@@ -4,6 +4,7 @@
         <a class="menu_item" href="/">Updates</a>
         <a class="menu_item" href="/categories">Gallery</a>
         <a class="menu_item" href="/commission">Commission</a>
+        <a class="menu_item" href="/admin/panel">Admin</a>
     </div>
     {{ if .Meta.Links}}
     <div class="menu_container">
@@ -11,9 +12,6 @@
         <a class="menu_item" target="_blank" href="{{$link.Address}}">{{$link.Title}}</a> {{end}}
     </div>
     {{end}}
-    <div class="menu_container">
-        <a class="menu_item" href="/admin/panel">Admin</a>
-    </div>
     <div class="menu_logo">
         <a href="/"><img src="/logo.png" /></a>
     </div>
