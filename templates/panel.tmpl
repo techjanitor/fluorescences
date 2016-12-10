@@ -1,100 +1,108 @@
 {{ template "base" .}}
 <div class="admin">
     <div class="gallery_info">
-        <div class="admin_title"> Categories <a class="button button-primary" style="float:right;" href="/admin/category">New</a>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th style="text-align:left;">Title</th>
-                    <th style="text-align:center;">Galleries</th>
-                    <th style="text-align:center;">Edit</th>
-                    <th style="text-align:center;">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{range $category := .Categories}}
-                <tr>
-                    <td style="width:auto;text-align:left;">
-                        {{$category.Title}}
-                    </td>
-                    <td style="width:3em;text-align:center;">
-                        {{$category.Galleries}}
-                    </td>
-                    <td style="width:3em;text-align:center;" align="center">
-                        <a class="button button-primary" href="/admin/category/edit/{{$category.ID}}">Edit</a>
-                    </td>
-                    <td style="width:3em;text-align:center;" align="center">
-                        <form action="/admin/category/delete" method="post" enctype="multipart/form-data">
-                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
-                            <input class="form-control" type="hidden" name="category" value="{{$category.ID}}" />
-                            <button class="button button-danger" type="submit" value="Submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {{end}}
-            </tbody>
-        </table>
+        <div class="admin_title">Admin panel</div>
+        <a class="button button-primary" style="float:right;" href="/admin/logout">Log Out</a>
     </div>
 </div>
 <div class="admin">
     <div class="gallery_info">
-        <div class="admin_title"> Galleries <a class="button button-primary" style="float:right;" href="/admin/gallery">New</a>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th style="text-align:left;">Title</th>
-                    <th style="text-align:center;">Images</th>
-                    <th style="text-align:center;">Private</th>
-                    <th style="text-align:center;">Edit</th>
-                    <th style="text-align:center;">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{range $gallery := .Galleries}}
-                <tr>
-                    <td style="width:auto;text-align:left;">
-                        {{$gallery.Title}}
-                    </td>
-                    <td style="width:3em;text-align:center;" align="center">
-                        {{$gallery.Images}}
-                    </td>
-                    <td style="width:3em;text-align:center;" align="center">
-                        {{if $gallery.Private}}
-                        <form action="/admin/gallery/private" method="post" enctype="multipart/form-data">
-                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
-                            <input class="form-control" type="hidden" name="id" value="{{$gallery.ID}}" />
-                            <input class="form-control" type="hidden" name="private" value="false" />
-                            <button class="button button-danger" type="submit" value="Submit">Private</button>
-                        </form>
-                        {{else}}
-                        <form action="/admin/gallery/private" method="post" enctype="multipart/form-data">
-                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
-                            <input class="form-control" type="hidden" name="id" value="{{$gallery.ID}}" />
-                            <input class="form-control" type="hidden" name="private" value="true" />
-                            <button class="button button-primary" type="submit" value="Submit">Public</button>
-                        </form>
-                        {{end}}
-                    </td>
-                    <td style="width:3em;text-align:center;" align="center">
-                        <a class="button button-primary" href="/admin/gallery/edit/{{$gallery.ID}}">Edit</a>
-                    </td>
-                    <td style="width:3em;text-align:center;" align="center">
-                        <form action="/admin/gallery/delete" method="post" enctype="multipart/form-data">
-                            <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
-                            <input class="form-control" type="hidden" name="gallery" value="{{$gallery.ID}}" />
-                            <button class="button button-danger" type="submit" value="Submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {{end}}
-            </tbody>
-        </table>
+        <div class="admin_title">Categories</div>
+        <a class="button button-primary" style="float:right;" href="/admin/category">New</a>
     </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left;">Title</th>
+                <th style="text-align:center;">Galleries</th>
+                <th style="text-align:center;">Edit</th>
+                <th style="text-align:center;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $category := .Categories}}
+            <tr>
+                <td style="width:auto;text-align:left;">
+                    {{$category.Title}}
+                </td>
+                <td style="width:3em;text-align:center;">
+                    {{$category.Galleries}}
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <a class="button button-primary" href="/admin/category/edit/{{$category.ID}}">Edit</a>
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <form action="/admin/category/delete" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                        <input class="form-control" type="hidden" name="category" value="{{$category.ID}}" />
+                        <button class="button button-danger" type="submit" value="Submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
 </div>
 <div class="admin">
-    <div class="admin_title">Blogs <a class="button button-primary" style="float:right;" href="/admin/blog">New</a>
+    <div class="gallery_info">
+        <div class="admin_title">Galleries</div>
+        <a class="button button-primary" style="float:right;" href="/admin/gallery">New</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left;">Title</th>
+                <th style="text-align:center;">Images</th>
+                <th style="text-align:center;">Private</th>
+                <th style="text-align:center;">Edit</th>
+                <th style="text-align:center;">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $gallery := .Galleries}}
+            <tr>
+                <td style="width:auto;text-align:left;">
+                    {{$gallery.Title}}
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    {{$gallery.Images}}
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    {{if $gallery.Private}}
+                    <form action="/admin/gallery/private" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                        <input class="form-control" type="hidden" name="id" value="{{$gallery.ID}}" />
+                        <input class="form-control" type="hidden" name="private" value="false" />
+                        <button class="button button-danger" type="submit" value="Submit">Private</button>
+                    </form>
+                    {{else}}
+                    <form action="/admin/gallery/private" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                        <input class="form-control" type="hidden" name="id" value="{{$gallery.ID}}" />
+                        <input class="form-control" type="hidden" name="private" value="true" />
+                        <button class="button button-primary" type="submit" value="Submit">Public</button>
+                    </form>
+                    {{end}}
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <a class="button button-primary" href="/admin/gallery/edit/{{$gallery.ID}}">Edit</a>
+                </td>
+                <td style="width:3em;text-align:center;" align="center">
+                    <form action="/admin/gallery/delete" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
+                        <input class="form-control" type="hidden" name="gallery" value="{{$gallery.ID}}" />
+                        <button class="button button-danger" type="submit" value="Submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+<div class="admin">
+    <div class="gallery_info">
+        <div class="admin_title">Blogs</div>
+        <a class="button button-primary" style="float:right;" href="/admin/blog">New</a>
     </div>
     <table>
         <thead>
@@ -126,7 +134,9 @@
     </table>
 </div>
 <div class="admin">
-    <div class="admin_title">Commission Information
+    <div class="gallery_info">
+        <div class="admin_title">Commission Information
+        </div>
     </div>
     <form action="/admin/commission/update" method="post" enctype="multipart/form-data">
         <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
@@ -144,7 +154,9 @@
 </div>
 
 <div class="admin">
-    <div class="admin_title">External Links
+    <div class="gallery_info">
+        <div class="admin_title">External Links
+        </div>
     </div>
     <form action="/admin/link/new" method="post" enctype="multipart/form-data">
         <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
@@ -190,7 +202,9 @@
 
 
 <div class="admin">
-    <div class="admin_title">Site Settings
+    <div class="gallery_info">
+        <div class="admin_title">Site Settings
+        </div>
     </div>
     <form action="/admin/settings/update" method="post" enctype="multipart/form-data">
         <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
@@ -209,7 +223,9 @@
 
 
 <div class="admin">
-    <div class="admin_title">Change Password
+    <div class="gallery_info">
+        <div class="admin_title">Change Password
+        </div>
     </div>
     <form action="/admin/password/update" method="post" enctype="multipart/form-data">
         <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />

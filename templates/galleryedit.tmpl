@@ -1,6 +1,8 @@
 {{ template "base" .}}
 <div class="admin">
-    <div class="admin_title">Gallery Information</div>
+    <div class="gallery_info">
+        <div class="admin_title">Gallery Information</div>
+    </div>
     <form action="/admin/gallery/update" method="post" enctype="multipart/form-data">
         <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
         <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
@@ -23,7 +25,8 @@
     </form>
 </div>
 <div class="admin">
-    <div class="admin_title">Keys
+    <div class="gallery_info">
+        <div class="admin_title">Keys</div>
         <form action="/admin/gallery/key/new" style="float:right;display:inline;" method="post" enctype="multipart/form-data">
             <input class="form-control" type="hidden" name="csrf_token" value="{{$.Csrf}}" />
             <input class="form-control" type="hidden" name="id" value="{{$.Gallery.ID}}" />
@@ -57,7 +60,9 @@
     </table>
 </div>
 <div class="admin">
-    <div class="admin_title">Upload</div>
+    <div class="gallery_info">
+        <div class="admin_title">Upload</div>
+    </div>
     <form action="/admin/gallery/image/new" method="post" enctype="multipart/form-data">
         <input class="form-control" type="hidden" name="csrf_token" value="{{.Csrf}}" />
         <input class="form-control" type="hidden" name="id" value="{{.Gallery.ID}}" />
@@ -73,7 +78,9 @@
     </form>
 </div>
 <div class="admin">
-    <div class="admin_title">Files</div>
+    <div class="gallery_info">
+        <div class="admin_title">Files</div>
+    </div>
     <table>
         <thead>
             <tr>

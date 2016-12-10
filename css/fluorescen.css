@@ -891,9 +891,18 @@ a {
   .admin .gallery_key {
     font-size: 1.8em;
     padding: 1em; }
+  .admin .gallery_info {
+    margin-bottom: 0.5em; }
+    .admin .gallery_info:before, .admin .gallery_info:after {
+      content: " ";
+      display: table; }
+    .admin .gallery_info:after {
+      clear: both; }
 
 .admin_title {
-  padding: 0 0 1em 0; }
+  padding: 0.3em;
+  float: left;
+  font-size: 1.2em; }
 
 /* forms */
 .form-control {
