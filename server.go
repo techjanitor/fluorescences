@@ -50,7 +50,7 @@ func start(name, address string, port int) {
 	// serve our static files
 	r.Static("/css", "./css")
 	r.Static("/images", "./images")
-	r.Static("/logo.png", "./logo.png")
+	r.StaticFile("/logo.png", "./logo.png")
 
 	// if nothing matches
 	r.NoRoute(c.ErrorController)
