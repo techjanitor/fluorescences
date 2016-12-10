@@ -13,6 +13,7 @@ RuntimeDirectory=fluorescences
 WorkingDirectory=/data/fluorescences/
 Environment=GIN_MODE=release
 ExecStart=/data/pram/bin/fluorescences --tenant fluorescences --address 0.0.0.0 --port 5000 start
+ExecStop=/bin/kill -TERM $MAINPID
 ExecReload=/bin/kill -USR2 $MAINPID
 Restart=always
 

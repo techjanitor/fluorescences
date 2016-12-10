@@ -6,29 +6,31 @@
 <body>
 <h1 id="fluorescences">fluorescences</h1>
 
-<p>a comic gallery</p>
+<p>a comic blog with private galleries</p>
 
 <h2 id="installinstructions">Install Instructions</h2>
 
 <p>First initialize the internal secret</p>
 
-<pre><code>fluorescences init secret
+<pre><code>fluorescences --tenant user init secret
 </code></pre>
 
 <p>then create a user, this will generate a password</p>
 
-<pre><code>fluorescences init user myuser
+<pre><code>fluorescences --tenant user init user --username user
 </code></pre>
 
 <p>create the boilerplate data</p>
 
-<pre><code>fluorescences init data
+<pre><code>fluorescences --tenant user init data
 </code></pre>
 
 <p>then start!</p>
 
-<pre><code>fluorescences start
+<pre><code>fluorescences --tenant user --address 0.0.0.0 --port 5000 start
 </code></pre>
+
+<p>or use the included systemd unit file</p>
 
 </body>
 </html>
